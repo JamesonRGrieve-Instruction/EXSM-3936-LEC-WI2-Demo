@@ -78,6 +78,10 @@ async function main() {
         toString() {
             return `This ${this.exampleFieldOne} has a count of ${this.exampleFieldTwo} and is ${this.exampleProperty}!`;
         }
+
+        static get staticProperty() {
+            return 'This is a static property and the value can be accessed directly from the class.';
+        }
     }
     output("---Class Result---");
     // To instantiate a class, use the new keyword.
@@ -113,6 +117,7 @@ async function main() {
     parseClassdObject.increment();
     output(parseClassdObject.exampleFieldTwo);
     
+    output(MyClass.staticProperty);
 }
 
 
