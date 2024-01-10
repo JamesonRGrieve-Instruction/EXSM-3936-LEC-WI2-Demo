@@ -1,14 +1,14 @@
 async function main() {
-    // This is where the code you're actually experimenting with goes.
+    // Properties can be defined either as 'variable names', or as strings.
+    const myObject = {
+        firstProperty: 'firstValue',
+        'second Property': 'secondValue'
+    };
     
-    let prompt = "Please enter your name, or 'Exit' to quit: "
-    let name = await input(prompt);
+    // Either definition syntax can be accessed either with the dot operator or as an indexer, with the exception of if the key contains a space. In that case, you must use the indexer syntax.
+    output(myObject.firstProperty);
+    output(myObject['second Property']);
 
-    while (name != "Exit") 
-    {
-        output("Hello, "+name+"!");
-        name = await input(prompt);
-    }
 }
 
 
