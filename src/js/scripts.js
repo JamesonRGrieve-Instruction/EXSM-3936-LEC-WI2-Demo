@@ -74,9 +74,15 @@ async function main() {
         increment() {
             this.exampleFieldTwo++;
         }
+
+        toString() {
+            return `This ${this.exampleFieldOne} has a count of ${this.exampleFieldTwo} and is ${this.exampleProperty}!`;
+        }
     }
     output("---Class Result---");
+    // To instantiate a class, use the new keyword.
     const myObjectOfClass = new MyClass('exampleFieldOneValue', 'examplePropertyValue');
+    // The resulting object contains any default values prescribed in its class, plus anything defined in the constructor.
     output(myObjectOfClass.exampleFieldOne);
     output(myObjectOfClass.exampleFieldTwo);
     output(myObjectOfClass.exampleProperty);
@@ -84,11 +90,16 @@ async function main() {
     myObjectOfClass.secondFunc();
     myObjectOfClass.thirdFunc();
 
+    // By overriding the toString() method, we can change the format mask applied to the object when it is converted to a string.
+    output(myObjectOfClass.toString());
 
-    const jsonClassObject = JSON.stringify(myObjectOfClass);
+    // Since the object's properties don't behave nicely with JSON, we can use the spread operator to create a new object with the same fields, and then manually assign the properties' getters to fields so that they are included in the JSON.
+    const jsonClassObject = JSON.stringify({...myObjectOfClass, exampleProperty: myObjectOfClass.exampleProperty});
     output(jsonClassObject);
+    // To reimport the object, we can create a new instance of the class, and then use JSON.parse to convert the JSON string back into an object before using Object.assign to merge them together.
     const parseClassdObject = Object.assign(new MyClass(), JSON.parse(jsonClassObject));
 
+    // The resulting object is a classed object exactly like the original, and can be used in the same way.
     output("---JSON Reimport Result---");
     output(parseClassdObject.exampleFieldOne);
     output(parseClassdObject.exampleFieldTwo);
