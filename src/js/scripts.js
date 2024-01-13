@@ -55,4 +55,14 @@ async function main() {
       this.inkLevel -= characters * 0.5;
     }
   }
+
+  const pen = new Pen("Bic", "Blue");
+  pen.write(100);
+  pen.write(42);
+  try {
+    pen.write(200);
+  } catch (error) {
+    output(error.message);
+  }
+  output(`The pen has ${pen.inkLevel}% of the ink remaining.`);
 }
