@@ -4,12 +4,15 @@ async function main() {
      * Constructor for the Pen class.
      * @param {string} brand - The brand of the pen
      * @param {string} colour - The colour of the pen
+     * @param {string} inkLevel - The amount of ink in the pen (mL), assumed to be the maximum ink level as well
      */
-    constructor(brand = "Bic", colour = "Black") {
+    constructor(brand = "Bic", colour = "Black", inkLevel = 100) {
       this.brand = brand;
       this.colour = colour;
-      this.inkLevel = 100;
+      this.inkLevel = inkLevel;
+      this.#maxInkLevel = inkLevel;
     }
+
     #brand;
     get brand() {
       return this.#brand;
@@ -21,6 +24,7 @@ async function main() {
         throw new Error(`The brand cannot be empty.`);
       }
     }
+
     #colour;
     get colour() {
       return this.#colour;
@@ -32,6 +36,7 @@ async function main() {
         throw new Error(`The colour cannot be empty.`);
       }
     }
+
     #inkLevel;
     get inkLevel() {
       return this.#inkLevel;
@@ -41,32 +46,48 @@ async function main() {
         throw new Error(
           `Writing that many characters would use too much ink. There is only ${this.inkLevel}% of the ink remaining.`
         );
-      } else if (value > 100) {
-        throw new Error(`The ink level cannot be greater than 100%.`);
+      } else if (value > this.maxInkLevel) {
+        throw new Error(`The ink level cannot be greater than the maximum.`);
       } else {
         this.#inkLevel = value;
       }
     }
+
+    #maxInkLevel;
+    get maxInkLevel() {
+      return this.#maxInkLevel;
+    }
+    set maxInkLevel(value) {
+      throw new Error(
+        `Changing the maximum ink level is not supported, the pen can only contain the maximum ink initially provided.`
+      );
+    }
+
     /**
-     * This method "writes a message" at the cost of 0.5% of the ink per character. If the ink level is too low, a message is written to the console.
+     * This method "writes a message" at the cost of 0.1mL of the ink per character. If the ink level is too low, a message is written to the console.
      * @param {number} characters - The number of characters to write
      */
     write(characters) {
-      this.inkLevel -= characters * 0.5;
+      try {
+        this.inkLevel -= characters * 0.1;
+      } catch (error) {
+        // This is arguably not the best thing to do, as we are tying this class to this environment by using output(). However, the alternative is to call write every time we want to write something, which is not ideal, or create /another/ helper method to wrap around write.
+        output(error.message);
+      }
+    }
+
+    /**
+     * This method calculates the percentage of ink remaining.
+     * @returns {string} - The percentage of ink remaining
+     */
+    inkRemaining() {
+      return `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
     }
   }
-  const pen = new Pen("Bic", "Blue");
+
+  const pen = new Pen("Bic", "Blue", 150);
   pen.write(100);
   pen.write(42);
   pen.write(200);
-  output(`The pen has ${pen.inkLevel}% of the ink remaining.`);
-}
-
-function writeWithPen(targetPen, characters) {
-  try {
-    targetPen.write(characters);
-  } catch (error) {
-    // Here we are creating another helper method to wrap around write, serving as a bridge between our (now universal) class and this environment. Slightly less maintainable because now there's another step in the process of calling the function, but it frees up our class to be used in other environments.
-    console.log(error.message);
-  }
+  output(`The pen has ${pen.inkRemaining()} of the ink remaining.`);
 }
