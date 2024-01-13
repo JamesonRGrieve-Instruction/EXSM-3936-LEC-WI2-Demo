@@ -1,37 +1,42 @@
 html {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
     --green: #0C0;
     --white: #EEE;
-    --black: #111111;
-    --error: red;
-    --meta: cyan;
-    --debug: yellow;
+    --black: #111;
+    --error: #F00;
+    --meta: #0FF;
+    --debug: #FF0;
 }
+
 body, .white-on-black {
     --text: var(--white);
     --back: var(--black);
-    --error: red;
-    --meta: rgb(50, 163, 255);
-    --debug: yellow;
+    --error: #F00;
+    --meta: #32a3ff;
+    --debug: #FF0;
 }
+
 .black-on-white {
     --text: var(--black);
     --back: var(--white);
-    --error: firebrick;
-    --meta: blue;
-    --debug: darkgoldenrod;
+    --error: #b22222;
+    --meta: #00f;
+    --debug: #b8860b;
 }
+
 .green-on-black {
     --text: var(--green);
     --back: var(--black);
-    --error: red;
-    --meta: rgb(50, 163, 255);
-    --debug: yellow;
+    --error: #f00;
+    --meta: #32a3ff;
+    --debug: #ff0;
 }
 
 body, #themes {
     background-color: #CCC;
 }
+
 #output {
     background-color: var(--back);
     overflow-y:scroll;
@@ -39,30 +44,37 @@ body, #themes {
     margin: 0 auto;
     padding: 2px;
 }
+
 #output p {
     margin: 0;
     color: var(--text);
 }
+
 #output .error {
     color: var(--error);
 }
+
 #output .meta {
     color: var(--meta);
 }
+
 #output .debug {
     color: var(--debug);
 }
+
 #input {
     position: absolute !important;
     top: -9999px !important;
     left: -9999px !important;
 }
+
 .container {
     margin: 0 auto;
     width: 80%;
     position: relative;
     border: 3px solid var(--black);
 }
+
 .flash>.editing::after {
  content: "|";
  font-weight: bolder;
@@ -76,6 +88,7 @@ body, #themes {
     left: 2%;
     padding: 5px;
 }
+
 .theme {
     width: 25px;
     height: 25px;
@@ -90,7 +103,7 @@ body, #themes {
 }
 
 .theme:hover {
-    border-color: rgb(0, 110, 110);
+    border-color: #006e6e;
 }
 
 
