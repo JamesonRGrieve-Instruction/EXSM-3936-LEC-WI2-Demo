@@ -39,11 +39,7 @@ async function main() {
 
   class MyClass {
     // The constructor is a special method that is invoked when the class is instantiated.
-    constructor(
-      fieldOne,
-      propOne,
-      propertyObjectField = "child default value"
-    ) {
+    constructor(fieldOne, propOne, propertyObjectField = "child default value") {
       this.exampleFieldOne = fieldOne;
       // It's important to use the property mutator here, otherwise the value will not be validated.
       this.exampleProperty = propOne;
@@ -103,10 +99,7 @@ async function main() {
   }
   output("---Class Result---");
   // To instantiate a class, use the new keyword.
-  const myObjectOfClass = new MyClass(
-    "exampleFieldOneValue",
-    "examplePropertyValue"
-  );
+  const myObjectOfClass = new MyClass("exampleFieldOneValue", "examplePropertyValue");
   // The resulting object contains any default values prescribed in its class, plus anything defined in the constructor.
   output(myObjectOfClass.exampleFieldOne);
   output(myObjectOfClass.exampleFieldTwo);
@@ -125,10 +118,7 @@ async function main() {
   });
   output(jsonClassObject);
   // To reimport the object, we can create a new instance of the class, and then use JSON.parse to convert the JSON string back into an object before using Object.assign to merge them together.
-  const parseClassdObject = Object.assign(
-    new MyClass(),
-    JSON.parse(jsonClassObject)
-  );
+  const parseClassdObject = Object.assign(new MyClass(), JSON.parse(jsonClassObject));
 
   // The resulting object is a classed object exactly like the original, and can be used in the same way.
   output("---JSON Reimport Result---");
@@ -148,10 +138,7 @@ async function main() {
 
   // -- Use of Object Properties --
   // The constructor of the "parent" calls the constructor of the "child" to create the object referenced in the property.
-  const parentObject = new MyClass(
-    "parentFieldValueOne",
-    "parentPropertyValueOne"
-  );
+  const parentObject = new MyClass("parentFieldValueOne", "parentPropertyValueOne");
   output(parentObject.exampleObjectField.exampleFieldOne);
   output(parentObject.exampleObjectField.getUppercase());
 
