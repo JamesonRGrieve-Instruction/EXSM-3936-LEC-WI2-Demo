@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-unused-vars
+/* global output, input */
+// eslint-disable-next-line no-unused-vars
 async function main() {
   class Pen {
     /**
@@ -44,7 +47,7 @@ async function main() {
     set inkLevel(value) {
       if (value < 0) {
         throw new Error(
-          `Writing that many characters would use too much ink. There is only ${this.inkLevel}% of the ink remaining.`
+          `Writing that many characters would use too much ink. There is only ${this.inkLevel}% of the ink remaining.`,
         );
       } else if (value > this.maxInkLevel) {
         throw new Error(`The ink level cannot be greater than the maximum.`);
@@ -59,7 +62,7 @@ async function main() {
     }
     set maxInkLevel(value) {
       throw new Error(
-        `Changing the maximum ink level is not supported, the pen can only contain the maximum ink initially provided.`
+        `Changing the maximum ink level is not supported, the pen can only contain the maximum ink initially provided.`,
       );
     }
 
@@ -80,8 +83,7 @@ async function main() {
      * This method calculates the percentage of ink remaining.
      * @returns {string} - The percentage of ink remaining
      */
-    inkRemaining = () =>
-      `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
+    inkRemaining = () => `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
   }
 
   const pen = new Pen("Bic", "Blue", 150);
