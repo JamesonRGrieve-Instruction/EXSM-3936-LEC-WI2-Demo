@@ -80,9 +80,8 @@ async function main() {
      * This method calculates the percentage of ink remaining.
      * @returns {string} - The percentage of ink remaining
      */
-    inkRemaining() {
-      return `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
-    }
+    inkRemaining = () =>
+      `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
   }
 
   const pen = new Pen("Bic", "Blue", 150);
