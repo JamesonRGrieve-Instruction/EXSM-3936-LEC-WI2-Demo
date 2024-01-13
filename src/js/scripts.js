@@ -48,21 +48,22 @@ async function main() {
       }
     }
     /**
-     * This method "writes a message" at the cost of 0.5% of the ink per character.
+     * This method "writes a message" at the cost of 0.5% of the ink per character. If the ink level is too low, a message is written to the console.
      * @param {number} characters - The number of characters to write
      */
     write(characters) {
-      this.inkLevel -= characters * 0.5;
+      try {
+        this.inkLevel -= characters * 0.5;
+      } catch (error) {
+        // This is arguably not the best thing to do, as we are tying this class to this environment by using output(). However, the alternative is to call write every time we want to write something, which is not ideal, or create /another/ helper method to wrap around write.
+        output(error.message);
+      }
     }
   }
 
   const pen = new Pen("Bic", "Blue");
   pen.write(100);
   pen.write(42);
-  try {
-    pen.write(200);
-  } catch (error) {
-    output(error.message);
-  }
+  pen.write(200);
   output(`The pen has ${pen.inkLevel}% of the ink remaining.`);
 }
