@@ -37,7 +37,11 @@ async function main() {
 
   class MyClass {
     // The constructor is a special method that is invoked when the class is instantiated.
-    constructor(fieldOne, propOne, propertyObjectField = "default value") {
+    constructor(
+      fieldOne,
+      propOne,
+      propertyObjectField = "child default value"
+    ) {
       this.exampleFieldOne = fieldOne;
       // It's important to use the property mutator here, otherwise the value will not be validated.
       this.exampleProperty = propOne;
@@ -86,7 +90,7 @@ async function main() {
     }
   }
   class MyPropertyClass {
-    constructor(fieldOne) {
+    constructor(fieldOne = "default value") {
       this.exampleFieldOne = fieldOne;
     }
     exampleFieldOne;
