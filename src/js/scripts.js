@@ -52,18 +52,21 @@ async function main() {
      * @param {number} characters - The number of characters to write
      */
     write(characters) {
-      try {
-        this.inkLevel -= characters * 0.5;
-      } catch (error) {
-        // This is arguably not the best thing to do, as we are tying this class to this environment by using output(). However, the alternative is to call write every time we want to write something, which is not ideal, or create /another/ helper method to wrap around write.
-        output(error.message);
-      }
+      this.inkLevel -= characters * 0.5;
     }
   }
-
   const pen = new Pen("Bic", "Blue");
   pen.write(100);
   pen.write(42);
   pen.write(200);
   output(`The pen has ${pen.inkLevel}% of the ink remaining.`);
+}
+
+function writeWithPen(targetPen, characters) {
+  try {
+    targetPen.write(characters);
+  } catch (error) {
+    // Here we are creating another helper method to wrap around write, serving as a bridge between our (now universal) class and this environment. Slightly less maintainable because now there's another step in the process of calling the function, but it frees up our class to be used in other environments.
+    console.log(error.message);
+  }
 }
