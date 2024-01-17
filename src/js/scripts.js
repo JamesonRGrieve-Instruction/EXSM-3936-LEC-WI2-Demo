@@ -92,14 +92,12 @@ async function main() {
       }
     }
 
-    /**
-     * This method calculates the percentage of ink remaining.
-     * @returns {string} - The percentage of ink remaining
-     */
-    inkRemaining = () => `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
+    get inkRemaining() {
+      return `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
+    }
 
     toString() {
-      return `The pen has ${this.inkRemaining()} of the ink remaining.`;
+      return `The pen has ${this.inkRemaining} of the ink remaining.`;
     }
   }
   class Pencil extends WritingImplement {
@@ -168,4 +166,6 @@ async function main() {
     writingImplement.write(10);
     output(writingImplement.toString());
   }
+
+  const writingImplement = new WritingImplement("Bic", "Blue");
 }
