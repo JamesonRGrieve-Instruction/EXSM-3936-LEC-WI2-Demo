@@ -4,6 +4,9 @@
 async function main() {
   class WritingImplement {
     constructor(brand, colour) {
+      if (this.constructor === WritingImplement) {
+        throw new Error(`The WritingImplement class is abstract and cannot be instantiated.`);
+      }
       this.brand = brand;
       this.colour = colour;
     }
@@ -30,6 +33,11 @@ async function main() {
       } else {
         throw new Error(`The colour cannot be empty.`);
       }
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    write(characters) {
+      throw new Error(`The write method is not implemented in this abstract class.`);
     }
   }
   class Pen extends WritingImplement {
@@ -89,6 +97,10 @@ async function main() {
      * @returns {string} - The percentage of ink remaining
      */
     inkRemaining = () => `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
+
+    toString() {
+      return `The pen has ${this.inkRemaining()} of the ink remaining.`;
+    }
   }
   class Pencil extends WritingImplement {
     /**
@@ -131,6 +143,10 @@ async function main() {
         output("The pencil is too short to be sharpened.");
       }
     }
+
+    toString() {
+      return `The pencil has ${this.sharpness} sharpness remaining and ${this.length}cm length remaining.`;
+    }
   }
 
   const pen = new Pen("Bic", "Blue", 150);
@@ -145,4 +161,11 @@ async function main() {
   output(`The pencil has ${pencil.sharpness} sharpness remaining and ${pencil.length}cm length remaining.`);
   pencil.sharpen();
   output(`The pencil has ${pencil.sharpness} sharpness remaining and ${pencil.length}cm length remaining.`);
+
+  const writingImplements = [pen, pencil];
+  for (const writingImplement of writingImplements) {
+    output(`The writing implement has ${writingImplement.colour} colour and is of the ${writingImplement.brand} brand.`);
+    writingImplement.write(10);
+    output(writingImplement.toString());
+  }
 }
