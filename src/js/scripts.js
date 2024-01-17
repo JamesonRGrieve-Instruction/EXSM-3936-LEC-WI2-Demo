@@ -7,7 +7,7 @@ async function main() {
       this.make = make;
       this.model = model;
       this.year = year;
-      this.odometer = 0;
+      this.#odometer = 0;
       this.engine = new Engine(cylinderCount);
       this.transmission = new Transmission(transmissionType, transmissionGearCount);
     }
@@ -138,7 +138,7 @@ async function main() {
       this.currentGear = "N";
       if (this.type === "manual") {
         for (let i = 1; i <= this.gearCount; i++) {
-          this.#gears.push(i);
+          this.#gears.push(i.toString());
         }
       } else {
         this.#gears.push("D", "P");
@@ -178,16 +178,16 @@ async function main() {
       };
     }
   }
-  const car = new Car("Toyota", "Corolla", 2020, 4, "automatic", 6);
+  const car = new Car("Toyota", "Corolla", 2020, 4, "manual", 6);
   car.startEngine();
-  car.transmission.currentGear = "D";
+  car.transmission.currentGear = "1";
   car.drive(100);
-  car.transmission.currentGear = "P";
+  car.transmission.currentGear = "N";
   car.stopEngine();
   car.startEngine();
-  car.transmission.currentGear = "D";
+  car.transmission.currentGear = "1";
   car.drive(50);
-  car.transmission.currentGear = "P";
+  car.transmission.currentGear = "N";
   car.stopEngine();
   output("Odometer: " + car.odometer);
   output(JSON.stringify(car));
