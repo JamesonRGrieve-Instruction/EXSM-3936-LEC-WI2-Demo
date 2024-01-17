@@ -58,6 +58,15 @@ async function main() {
         throw new Error("The engine is not running.");
       }
     }
+    toJSON() {
+      return {
+        make: this.make,
+        model: this.model,
+        year: this.year,
+        odometer: this.odometer,
+        engine: this.engine,
+      };
+    }
   }
   class Engine {
     constructor(cylinderCount) {
@@ -78,6 +87,12 @@ async function main() {
     set cylinderCount(value) {
       this.#cylinderCount = value;
     }
+    toJSON() {
+      return {
+        isRunning: this.isRunning,
+        cylinderCount: this.cylinderCount,
+      };
+    }
   }
   const car = new Car("Toyota", "Corolla", 2020, 4);
   car.startEngine();
@@ -87,17 +102,5 @@ async function main() {
   car.drive(50);
   car.stopEngine();
   output("Odometer: " + car.odometer);
-  output(
-    JSON.stringify({
-      ...car,
-      make: car.make,
-      model: car.model,
-      year: car.year,
-      odometer: car.odometer,
-      engine: {
-        isRunning: car.engine.isRunning,
-        cylinderCount: car.engine.cylinderCount,
-      },
-    }),
-  );
+  output(JSON.stringify(car));
 }
