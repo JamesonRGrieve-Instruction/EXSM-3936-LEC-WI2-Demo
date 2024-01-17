@@ -107,7 +107,7 @@ async function main() {
       return this.#isRunning;
     }
     set isRunning(value) {
-      if (this.#isRunning) {
+      if (this.#isRunning && value) {
         throw new Error("The engine is already running.");
       } else {
         this.#isRunning = value;
