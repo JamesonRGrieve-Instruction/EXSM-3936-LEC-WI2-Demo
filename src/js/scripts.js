@@ -16,28 +16,37 @@ async function main() {
       return this.#make;
     }
     set make(value) {
-      this.#make = value;
+      if (value.trim().length === 0) {
+        throw new Error("Make cannot be empty.");
+      } else {
+        this.#make = value.trim();
+      }
     }
     #model;
     get model() {
       return this.#model;
     }
     set model(value) {
-      this.#model = value;
+      if (value.trim().length === 0) {
+        throw new Error("Model cannot be empty.");
+      } else {
+        this.#model = value.trim();
+      }
     }
     #year;
     get year() {
       return this.#year;
     }
     set year(value) {
-      this.#year = value;
+      if (!Number.isInteger(value) || value < 1885 || value > new Date().getFullYear() + 1) {
+        throw new Error("Invalid year.");
+      } else {
+        this.#year = value;
+      }
     }
     #odometer;
     get odometer() {
       return this.#odometer;
-    }
-    set odometer(value) {
-      this.#odometer = value;
     }
     #engine;
     get engine() {
@@ -54,9 +63,7 @@ async function main() {
       this.#transmission = value;
     }
     startEngine() {
-      if (this.engine.isRunning) {
-        throw new Error("The engine is already running.");
-      } else if (!["N", "P"].includes(this.transmission.currentGear)) {
+      if (!["N", "P"].includes(this.transmission.currentGear)) {
         throw new Error("The transmission is not in neutral or park.");
       } else {
         this.engine.isRunning = true;
@@ -66,7 +73,9 @@ async function main() {
       this.engine.isRunning = false;
     }
     drive(distance) {
-      if (!this.engine.isRunning) {
+      if (distance < 0) {
+        throw new Error("Distance cannot be negative.");
+      } else if (!this.engine.isRunning) {
         throw new Error("The engine is not running.");
       } else if (
         (this.transmission.type === "automatic" && this.transmission.currentGear !== "D") ||
@@ -74,11 +83,8 @@ async function main() {
       ) {
         throw new Error("The transmission is not in a valid gear to drive.");
       } else {
-        this.odometer += distance;
+        this.#odometer += distance;
       }
-    }
-    shift(targetGear) {
-      this.transmission.currentGear = targetGear;
     }
     toJSON() {
       return {
@@ -101,7 +107,11 @@ async function main() {
       return this.#isRunning;
     }
     set isRunning(value) {
-      this.#isRunning = value;
+      if (this.#isRunning) {
+        throw new Error("The engine is already running.");
+      } else {
+        this.#isRunning = value;
+      }
     }
     #cylinderCount;
     get cylinderCount() {
@@ -119,10 +129,22 @@ async function main() {
   }
   class Transmission {
     constructor(type, gearCount) {
+      if (!["automatic", "manual"].includes(type)) {
+        throw new Error("Invalid transmission type.");
+      }
       this.type = type;
       this.gearCount = gearCount;
+      this.#gears = ["N", "R"];
       this.currentGear = "N";
+      if (this.type === "manual") {
+        for (let i = 1; i <= this.gearCount; i++) {
+          this.#gears.push(i);
+        }
+      } else {
+        this.#gears.push("D", "P");
+      }
     }
+    #gears;
     #type;
     get type() {
       return this.#type;
@@ -142,7 +164,11 @@ async function main() {
       return this.#currentGear;
     }
     set currentGear(value) {
-      this.#currentGear = value;
+      if (!this.#gears.includes(value)) {
+        throw new Error("Invalid gear.");
+      } else {
+        this.#currentGear = value;
+      }
     }
     toJSON() {
       return {
@@ -154,14 +180,14 @@ async function main() {
   }
   const car = new Car("Toyota", "Corolla", 2020, 4, "automatic", 6);
   car.startEngine();
-  car.shift("D");
+  car.transmission.currentGear = "D";
   car.drive(100);
-  car.shift("P");
+  car.transmission.currentGear = "P";
   car.stopEngine();
   car.startEngine();
-  car.shift("D");
+  car.transmission.currentGear = "D";
   car.drive(50);
-  car.shift("P");
+  car.transmission.currentGear = "P";
   car.stopEngine();
   output("Odometer: " + car.odometer);
   output(JSON.stringify(car));
