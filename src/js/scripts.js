@@ -2,14 +2,14 @@
 /* global output, input */
 // eslint-disable-next-line no-unused-vars
 async function main() {
-  class Car {
-    constructor(make, model, year, cylinderCount, transmissionType, transmissionGearCount) {
+  class Vehicle {
+    constructor(make, model, year) {
+      if (constructor === Vehicle) {
+        throw new Error("Cannot instantiate abstract class.");
+      }
       this.make = make;
       this.model = model;
       this.year = year;
-      this.#odometer = 0;
-      this.engine = new Engine(cylinderCount);
-      this.transmission = new Transmission(transmissionType, transmissionGearCount);
     }
     #make;
     get make() {
@@ -43,6 +43,20 @@ async function main() {
       } else {
         this.#year = value;
       }
+    }
+    drive(distance) {
+      throw new Error("Abstract method.");
+    }
+  }
+  class RoadVehicle extends Vehicle {
+    constructor(make, model, year, cylinderCount, transmissionType, transmissionGearCount) {
+      if (constructor === RoadVehicle) {
+        throw new Error("Cannot instantiate abstract class.");
+      }
+      super(make, model, year);
+      this.#odometer = 0;
+      this.engine = new Engine(cylinderCount);
+      this.transmission = new Transmission(transmissionType, transmissionGearCount);
     }
     #odometer;
     get odometer() {
@@ -178,6 +192,56 @@ async function main() {
       };
     }
   }
+  class Bicycle extends Vehicle {
+    constructor(make, model, year, gearCount) {
+      super(make, model, year);
+      this.gearCount = gearCount;
+    }
+    #gearCount;
+    get gearCount() {
+      return this.#gearCount;
+    }
+    set gearCount(value) {
+      this.#gearCount = value;
+    }
+    drive(distance) {
+      if (distance < 0) {
+        throw new Error("Distance cannot be negative.");
+      } else {
+        output("Riding " + distance + " miles.");
+      }
+    }
+    toJSON() {
+      return {
+        make: this.make,
+        model: this.model,
+        year: this.year,
+        gearCount: this.gearCount,
+      };
+    }
+  }
+  class PickupTruck extends RoadVehicle {
+    constructor(make, model, year, cylinderCount, transmissionType, transmissionGearCount, bedLength) {
+      super(make, model, year, cylinderCount, transmissionType, transmissionGearCount);
+      this.bedLength = bedLength;
+    }
+    #bedLength;
+    get bedLength() {
+      return this.#bedLength;
+    }
+    set bedLength(value) {
+      if (!Number.isInteger(value) || value < 0) {
+        throw new Error("Invalid bed length.");
+      }
+      this.#bedLength = value;
+    }
+  }
+  class Car extends RoadVehicle {
+    constructor(make, model, year, cylinderCount, transmissionType, transmissionGearCount) {
+      super(make, model, year, cylinderCount, transmissionType, transmissionGearCount);
+    }
+  }
+
   const car = new Car("Toyota", "Corolla", 2020, 4, "manual", 6);
   car.startEngine();
   car.transmission.currentGear = "1";
