@@ -9,7 +9,7 @@ async function main() {
      * @param {string} colour - The colour of the pen
      * @param {string} inkLevel - The amount of ink in the pen (mL), assumed to be the maximum ink level as well
      */
-    constructor({ brand = "Bic", colour = "Black", inkLevel = 150 } = {}) {
+    constructor(brand = "Bic", colour = "Black", inkLevel = 100) {
       this.brand = brand;
       this.colour = colour;
       this.inkLevel = inkLevel;
@@ -86,9 +86,10 @@ async function main() {
     inkRemaining = () => `${((this.inkLevel / this.maxInkLevel) * 100).toFixed(2)}%`;
   }
 
-  const pen = new Pen({ colour: "Blue", inkLevel: 100 });
+  const pen = new Pen(undefined, "Blue", 150);
   pen.write(100);
   pen.write(42);
   pen.write(200);
   output(`The pen has ${pen.inkRemaining()} of the ink remaining.`);
+  output(pen.brand);
 }
