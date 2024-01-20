@@ -76,6 +76,9 @@ async function main() {
     set transmission(value) {
       this.#transmission = value;
     }
+    orderNewFactoryEngine() {
+      return new Engine(this.engine.cylinderCount);
+    }
     startEngine() {
       if (!["N", "P"].includes(this.transmission.currentGear)) {
         throw new Error("The transmission is not in neutral or park.");
@@ -240,6 +243,16 @@ async function main() {
     constructor(make, model, year, cylinderCount, transmissionType, transmissionGearCount) {
       super(make, model, year, cylinderCount, transmissionType, transmissionGearCount);
     }
+    newModelYear() {
+      return new Car(
+        this.make,
+        this.model,
+        this.year + 1,
+        this.engine.cylinderCount,
+        this.transmission.type,
+        this.transmission.gearCount,
+      );
+    }
   }
 
   const car = new Car("Toyota", "Corolla", 2020, 4, "manual", 6);
@@ -255,4 +268,7 @@ async function main() {
   car.stopEngine();
   output("Odometer: " + car.odometer);
   output(JSON.stringify(car));
+
+  const tradeIn = car.newModelYear();
+  output(JSON.stringify(tradeIn));
 }
