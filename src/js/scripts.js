@@ -1,17 +1,9 @@
-const pageMain = document.querySelector("main");
-pageMain.innerHTML = "<aside><h2>Awesome Webpack</h2></aside>";
-pageMain.remove();
-
-const pageHeader = document.querySelector("header");
-pageHeader.addEventListener("click", () => {
-  console.log("Header clicked");
-});
-pageHeader.addEventListener("mouseenter", () => {
-  console.log("Mouse entered header");
-});
-pageHeader.addEventListener("mouseleave", () => {
-  console.log("Mouse exit header");
-});
-document.addEventListener("keydown", (event) => {
-  console.log("Key pressed - " + event.key);
+const submitButton = document.querySelector("button");
+const main = document.querySelector("main");
+const urlInput = document.querySelector("#input-url");
+const nameInput = document.querySelector("#input-name");
+const tagInput = document.querySelector("#input-tags");
+submitButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  main.innerHTML = `<img src="${urlInput.value}" alt="${nameInput.value}" />`;
 });
