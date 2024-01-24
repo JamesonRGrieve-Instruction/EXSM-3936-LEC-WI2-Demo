@@ -3,6 +3,7 @@ const main = document.querySelector("main");
 const urlInput = document.querySelector("#input-url");
 const nameInput = document.querySelector("#input-name");
 const tagInput = document.querySelector("#input-tags");
+const searchInput = document.querySelector("#input-search");
 submitButton.addEventListener("click", (event) => {
   event.preventDefault();
 
@@ -26,6 +27,8 @@ submitButton.addEventListener("click", (event) => {
     // Prevent the link from trying to navigate.
     newImageTagA.addEventListener("click", (event) => {
       event.preventDefault();
+      searchInput.value = tag;
+      searchInput.dispatchEvent(new Event("input"));
     });
     newImageTagA.href = "#";
     newImageTagA.textContent = "#" + tag;
@@ -39,4 +42,23 @@ submitButton.addEventListener("click", (event) => {
   newImageContainer.appendChild(newImage);
   newImageContainer.appendChild(newImageTags);
   main.appendChild(newImageContainer);
+});
+
+searchInput.addEventListener("input", (event) => {
+  const search = event.target.value;
+  const images = document.querySelectorAll(".image-container");
+  for (const image of images) {
+    const tags = image.querySelectorAll("li");
+    let found = false;
+    for (const tag of tags) {
+      if (tag.textContent.includes(search)) {
+        found = true;
+      }
+    }
+    if (found) {
+      image.style.display = "block";
+    } else {
+      image.style.display = "none";
+    }
+  }
 });
