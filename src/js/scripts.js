@@ -6,7 +6,6 @@ const tagInput = document.querySelector("#input-tags");
 const searchInput = document.querySelector("#input-search");
 submitButton.addEventListener("click", (event) => {
   event.preventDefault();
-
   // Build Container
   const newImageContainer = document.createElement("div");
   newImageContainer.classList.add("image-container");
@@ -22,7 +21,6 @@ submitButton.addEventListener("click", (event) => {
   // For each tag in the input, create a new li element.
   for (const tag of tagInput.value.split(" ")) {
     const newImageTag = document.createElement("li");
-
     const newImageTagA = document.createElement("a");
     // Prevent the link from trying to navigate.
     newImageTagA.addEventListener("click", (event) => {
@@ -32,18 +30,15 @@ submitButton.addEventListener("click", (event) => {
     });
     newImageTagA.href = "#";
     newImageTagA.textContent = "#" + tag;
-
     newImageTag.appendChild(newImageTagA);
     newImageTags.appendChild(newImageTag);
   }
-
   // Assemble New Element
   newImageContainer.appendChild(newImageHeading);
   newImageContainer.appendChild(newImage);
   newImageContainer.appendChild(newImageTags);
   main.appendChild(newImageContainer);
 });
-
 searchInput.addEventListener("input", (event) => {
   const search = event.target.value;
   const images = document.querySelectorAll(".image-container");
