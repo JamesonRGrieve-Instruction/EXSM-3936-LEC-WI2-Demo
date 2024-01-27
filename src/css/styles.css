@@ -102,3 +102,21 @@ footer form {
     justify-content: center;
     gap: 0.5rem
 }
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+li {
+    background-color: #ccc;
+    border: 2px solid rgb(158, 116, 65);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+li a {
+    text-decoration: none;
+    font-weight: bolder;
+}
