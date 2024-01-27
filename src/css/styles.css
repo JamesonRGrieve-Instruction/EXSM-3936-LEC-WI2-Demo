@@ -5,6 +5,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: bisque;
 }
 header, main, footer {
     max-width: 1200px;
@@ -21,6 +22,10 @@ main {
 }
 img {
     width: 100%;
+}
+h1 {
+    text-align: center;
+    margin: 0.5rem 0;
 }
 h2 {
     text-align: center;
@@ -43,7 +48,6 @@ h2 {
     from {
         transform: translateY(-100%);
     }
-
     to {
         transform: translateY(0);
     }
@@ -63,4 +67,18 @@ h2 {
 }
 .modal > * {
     z-index: 1;
+}
+header input {
+    width: 100%;
+}
+input, button {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+}
+footer form {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem
 }
