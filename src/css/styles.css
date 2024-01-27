@@ -26,13 +26,13 @@ main {
     align-items: center;
     padding: 0 0.5rem;
 }
-.image-container div span {
+.image-container div span i {
     cursor: pointer;
     color: rgb(158, 116, 65);
     font-size: 2rem;
     font-weight: bolder
 }
-.image-container div span:hover {
+.image-container div span i:hover {
     cursor: pointer;
     color: red;
 }

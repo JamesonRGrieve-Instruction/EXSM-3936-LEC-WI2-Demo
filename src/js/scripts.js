@@ -9,7 +9,7 @@ function clickRemove(event) {
   // Create Modal
   const modal = document.createElement("div");
   modal.classList.add("modal");
-  modal.id = "remove-" + event.target.parentNode.parentNode.id;
+  modal.id = "remove-" + event.target.parentNode.parentNode.parentNode.id;
   // Create Confirm Button
   const confirmButton = document.createElement("button");
   confirmButton.textContent = "Confirm";
@@ -22,6 +22,21 @@ function clickRemove(event) {
   modal.appendChild(confirmButton);
   modal.appendChild(removeButton);
   main.appendChild(modal);
+}
+function clickClone(event) {
+  const target = event.target.parentNode.parentNode.parentNode;
+  const clone = target.cloneNode(true);
+  clone.querySelector(".fa-trash-can").addEventListener("click", clickRemove);
+  clone.querySelector(".fa-clone").addEventListener("click", clickClone);
+  for (const tag of clone.querySelectorAll("li>a")) {
+    tag.addEventListener("click", (event) => {
+      event.preventDefault();
+      searchInput.value = tag.innerText.replace("#", "");
+      searchInput.dispatchEvent(new Event("input"));
+    });
+  }
+  clone.id = target.id + "-clone";
+  main.appendChild(clone);
 }
 function removeImage(event) {
   const target = document.querySelector("#" + event.target.parentNode.id.replace("remove-", ""));
@@ -43,10 +58,18 @@ submitButton.addEventListener("click", (event) => {
   // Build Heading
   const newImageHeading = document.createElement("h2");
   newImageHeading.textContent = nameInput.value;
-  // Build Remove Button
-  const newImageRemoveButton = document.createElement("span");
-  newImageRemoveButton.textContent = "X";
-  newImageRemoveButton.addEventListener("click", clickRemove);
+  // Build Icon Buttons
+  const newImageIconButtons = document.createElement("span");
+  // Create Remove Button
+  const removeButtonIcon = document.createElement("i");
+  removeButtonIcon.classList.add("fa-solid", "fa-trash-can");
+  removeButtonIcon.addEventListener("click", clickRemove);
+  newImageIconButtons.appendChild(removeButtonIcon);
+  // Create Clone Button
+  const cloneButtonIcon = document.createElement("i");
+  cloneButtonIcon.classList.add("fa-solid", "fa-clone");
+  cloneButtonIcon.addEventListener("click", clickClone);
+  newImageIconButtons.appendChild(cloneButtonIcon);
 
   // Build Image
   const newImage = document.createElement("img");
@@ -71,7 +94,7 @@ submitButton.addEventListener("click", (event) => {
   }
   // Assemble New Element
   newImageContainerTitleBar.appendChild(newImageHeading);
-  newImageContainerTitleBar.appendChild(newImageRemoveButton);
+  newImageContainerTitleBar.appendChild(newImageIconButtons);
   newImageContainer.appendChild(newImageContainerTitleBar);
   newImageContainer.appendChild(newImage);
   newImageContainer.appendChild(newImageTags);
