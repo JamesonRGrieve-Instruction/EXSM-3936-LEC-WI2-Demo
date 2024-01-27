@@ -5,6 +5,24 @@ const nameInput = document.querySelector("#input-name");
 const tagInput = document.querySelector("#input-tags");
 const searchInput = document.querySelector("#input-search");
 
+function sortImageContainers() {
+  const imageContainers = Array.from(document.querySelectorAll(".image-container"));
+  const sortedContainers = imageContainers.sort((a, b) => {
+    const titleA = a.querySelector("h2").textContent.toLowerCase();
+    const titleB = b.querySelector("h2").textContent.toLowerCase();
+    if (titleA < titleB) {
+      return -1;
+    }
+    if (titleA > titleB) {
+      return 1;
+    }
+    return 0;
+  });
+  sortedContainers.forEach((container) => {
+    main.appendChild(container);
+  });
+}
+
 function checkForExistingImage(newTitle, newId) {
   const existingTitles = Array.from(document.querySelectorAll(".image-container h2")).map((element) =>
     element.textContent.toLowerCase(),
@@ -39,6 +57,7 @@ function clickSave(event) {
 
     saveButton.replaceWith(editButton);
     cancelButton.replaceWith(cloneButton);
+    sortImageContainers();
   } catch (error) {
     console.error(error);
   }
@@ -100,6 +119,7 @@ function clickClone(event) {
   try {
     checkForExistingImage(clone.querySelector("h2").innerText, clone.id);
     main.appendChild(clone);
+    sortImageContainers();
   } catch (error) {
     console.error(error);
   }
@@ -190,6 +210,7 @@ submitButton.addEventListener("click", (event) => {
   try {
     checkForExistingImage(newImageHeading.textContent, newImageContainer.id);
     main.appendChild(newImageContainer);
+    sortImageContainers();
   } catch (error) {
     console.error(error);
   }
