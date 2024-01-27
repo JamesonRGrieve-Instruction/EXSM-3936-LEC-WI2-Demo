@@ -4,7 +4,78 @@ const urlInput = document.querySelector("#input-url");
 const nameInput = document.querySelector("#input-name");
 const tagInput = document.querySelector("#input-tags");
 const searchInput = document.querySelector("#input-search");
-
+function clickSave(event) {
+  // This function changes the input back into an h2 containing the same text as the input did, changes the save button into an edit button, and changes the cancel button into a clone button.
+  const target = event.target.parentNode.parentNode.parentNode;
+  const name = target.querySelector("input");
+  const editButton = document.createElement("i");
+  editButton.classList.add("fa-solid", "fa-pen-to-square");
+  editButton.addEventListener("click", clickEdit);
+  const cloneButton = document.createElement("i");
+  cloneButton.classList.add("fa-solid", "fa-clone");
+  cloneButton.addEventListener("click", clickClone);
+  const saveButton = target.querySelector(".fa-save");
+  const cancelButton = target.querySelector(".fa-times");
+  const nameHeading = document.createElement("h2");
+  nameHeading.textContent = name.value;
+  name.replaceWith(nameHeading);
+  saveButton.replaceWith(editButton);
+  cancelButton.replaceWith(cloneButton);
+}
+function clickCancel(event) {
+  // This function changes the input back into an h2 containing the same text as the input did, changes the save button into an edit button, and changes the cancel button into a clone button.
+  const target = event.target.parentNode.parentNode.parentNode;
+  const name = target.querySelector("input");
+  const editButton = document.createElement("i");
+  editButton.classList.add("fa-solid", "fa-pen-to-square");
+  editButton.addEventListener("click", clickEdit);
+  const cloneButton = document.createElement("i");
+  cloneButton.classList.add("fa-solid", "fa-clone");
+  cloneButton.addEventListener("click", clickClone);
+  const saveButton = target.querySelector(".fa-save");
+  const cancelButton = target.querySelector(".fa-times");
+  const nameHeading = document.createElement("h2");
+  nameHeading.textContent = name.placeholder;
+  name.replaceWith(nameHeading);
+  saveButton.replaceWith(editButton);
+  cancelButton.replaceWith(cloneButton);
+}
+function clickEdit(event) {
+  // This function changes the h2 into an input containing the same text as the h2 did, changes the edit button into a save button, and changes the clone button into a cancel button.
+  const target = event.target.parentNode.parentNode.parentNode;
+  const name = target.querySelector("h2");
+  const editButton = target.querySelector(".fa-pen-to-square");
+  const cloneButton = target.querySelector(".fa-clone");
+  const saveButton = document.createElement("i");
+  saveButton.classList.add("fa-solid", "fa-save");
+  saveButton.addEventListener("click", clickSave);
+  const cancelButton = document.createElement("i");
+  cancelButton.classList.add("fa-solid", "fa-times");
+  cancelButton.addEventListener("click", clickCancel);
+  const nameInput = document.createElement("input");
+  nameInput.placeholder = name.textContent;
+  nameInput.type = "text";
+  nameInput.value = name.textContent;
+  nameInput.classList.add("edit");
+  name.replaceWith(nameInput);
+  editButton.replaceWith(saveButton);
+  cloneButton.replaceWith(cancelButton);
+}
+function clickClone(event) {
+  const target = event.target.parentNode.parentNode.parentNode;
+  const clone = target.cloneNode(true);
+  clone.querySelector(".fa-trash-can").addEventListener("click", clickRemove);
+  clone.querySelector(".fa-clone").addEventListener("click", clickClone);
+  for (const tag of clone.querySelectorAll("li>a")) {
+    tag.addEventListener("click", (event) => {
+      event.preventDefault();
+      searchInput.value = tag.innerText.replace("#", "");
+      searchInput.dispatchEvent(new Event("input"));
+    });
+  }
+  clone.id = target.id + "-clone";
+  main.appendChild(clone);
+}
 function clickRemove(event) {
   // Create Modal
   const modal = document.createElement("div");
@@ -22,21 +93,6 @@ function clickRemove(event) {
   modal.appendChild(confirmButton);
   modal.appendChild(removeButton);
   main.appendChild(modal);
-}
-function clickClone(event) {
-  const target = event.target.parentNode.parentNode.parentNode;
-  const clone = target.cloneNode(true);
-  clone.querySelector(".fa-trash-can").addEventListener("click", clickRemove);
-  clone.querySelector(".fa-clone").addEventListener("click", clickClone);
-  for (const tag of clone.querySelectorAll("li>a")) {
-    tag.addEventListener("click", (event) => {
-      event.preventDefault();
-      searchInput.value = tag.innerText.replace("#", "");
-      searchInput.dispatchEvent(new Event("input"));
-    });
-  }
-  clone.id = target.id + "-clone";
-  main.appendChild(clone);
 }
 function removeImage(event) {
   const target = document.querySelector("#" + event.target.parentNode.id.replace("remove-", ""));
@@ -60,16 +116,21 @@ submitButton.addEventListener("click", (event) => {
   newImageHeading.textContent = nameInput.value;
   // Build Icon Buttons
   const newImageIconButtons = document.createElement("span");
-  // Create Remove Button
-  const removeButtonIcon = document.createElement("i");
-  removeButtonIcon.classList.add("fa-solid", "fa-trash-can");
-  removeButtonIcon.addEventListener("click", clickRemove);
-  newImageIconButtons.appendChild(removeButtonIcon);
+  // Create Edit Button
+  const editButtonIcon = document.createElement("i");
+  editButtonIcon.classList.add("fa-solid", "fa-pen-to-square");
+  editButtonIcon.addEventListener("click", clickEdit);
+  newImageIconButtons.appendChild(editButtonIcon);
   // Create Clone Button
   const cloneButtonIcon = document.createElement("i");
   cloneButtonIcon.classList.add("fa-solid", "fa-clone");
   cloneButtonIcon.addEventListener("click", clickClone);
   newImageIconButtons.appendChild(cloneButtonIcon);
+  // Create Remove Button
+  const removeButtonIcon = document.createElement("i");
+  removeButtonIcon.classList.add("fa-solid", "fa-trash-can");
+  removeButtonIcon.addEventListener("click", clickRemove);
+  newImageIconButtons.appendChild(removeButtonIcon);
 
   // Build Image
   const newImage = document.createElement("img");
