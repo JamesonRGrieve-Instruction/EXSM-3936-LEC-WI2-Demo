@@ -181,6 +181,10 @@ function cancelModal(event) {
 
 submitButton.addEventListener("click", (event) => {
   event.preventDefault();
+
+  // prevent user from submitting with empty inputs
+  if (!urlInput.value.trim() || !nameInput.value.trim() || !tagInput.value.trim()) return;
+
   // Build Container
   const newImageContainer = document.createElement("div");
   newImageContainer.id = nameInput.value.replaceAll(" ", "-").toLowerCase();
