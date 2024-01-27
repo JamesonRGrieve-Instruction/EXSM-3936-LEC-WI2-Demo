@@ -20,6 +20,22 @@ main {
     border: 2px solid #ccc;
     border-radius: 0.5rem;
 }
+.image-container div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5rem;
+}
+.image-container div span {
+    cursor: pointer;
+    color: rgb(158, 116, 65);
+    font-size: 2rem;
+    font-weight: bolder
+}
+.image-container div span:hover {
+    cursor: pointer;
+    color: red;
+}
 img {
     width: 100%;
 }
@@ -30,6 +46,10 @@ h1 {
 h2 {
     text-align: center;
     margin: 0.5rem 0;
+    display: inline-block;
+}
+.image-container span {
+    display: inline-block;
 }
 .modal {
     position: fixed;
