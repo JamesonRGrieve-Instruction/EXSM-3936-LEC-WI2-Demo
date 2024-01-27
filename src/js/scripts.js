@@ -99,6 +99,7 @@ function clickSave(event) {
     cancelButton.replaceWith(cloneButton);
     sortImageContainers();
   } catch (error) {
+    showModal(error.message);
     console.error(error);
   }
 }
@@ -149,41 +150,30 @@ function clickClone(event) {
     main.appendChild(clone);
     sortImageContainers();
   } catch (error) {
+    showModal(error.message);
     console.error(error);
   }
 }
 function clickRemove(event) {
-  // Create Modal
-  const modal = document.createElement("div");
-  modal.classList.add("modal");
-  modal.id = "remove-" + event.target.parentNode.parentNode.parentNode.id;
-  // Create Confirm Button
-  const confirmButton = document.createElement("button");
-  confirmButton.textContent = "Confirm";
-  confirmButton.addEventListener("click", removeImage);
-  // Create Cancel Button
-  const removeButton = document.createElement("button");
-  removeButton.textContent = "Cancel";
-  removeButton.addEventListener("click", cancelModal);
-  // Build Modal
-  modal.appendChild(confirmButton);
-  modal.appendChild(removeButton);
-  main.appendChild(modal);
+  showModal("Are you sure you want to delete this image?", true, event);
 }
 function removeImage(event) {
-  const target = document.querySelector("#" + event.target.parentNode.id.replace("remove-", ""));
+  const target = document.querySelector("#" + event.target.parentNode.parentNode.id.replace("remove-", ""));
   target.remove();
-  event.target.parentNode.remove();
+  event.target.parentNode.parentNode.remove();
 }
 function cancelModal(event) {
-  event.target.parentNode.remove();
+  event.target.parentNode.parentNode.remove();
 }
 
 submitButton.addEventListener("click", (event) => {
   event.preventDefault();
 
   // prevent user from submitting with empty inputs
-  if (!urlInput.value.trim() || !nameInput.value.trim() || !tagInput.value.trim()) return;
+  if (!urlInput.value.trim() || !nameInput.value.trim() || !tagInput.value.trim()) {
+    showModal("Please fill out all the input fields!");
+    return;
+  }
 
   // Build Container
   const newImageContainer = document.createElement("div");
@@ -238,6 +228,7 @@ submitButton.addEventListener("click", (event) => {
     main.appendChild(newImageContainer);
     sortImageContainers();
   } catch (error) {
+    showModal(error.message);
     console.error(error);
   }
 });
@@ -260,3 +251,42 @@ searchInput.addEventListener("input", (event) => {
     }
   }
 });
+
+/**
+ * This function shows a custom modal with a message
+ * @param {string} message - Message to be displayed
+ * @param {boolean} deleteImage - Set if the modal is being used to delete an image
+ * @param {Event | Null} event - Event that was used to open modal (only used if removeImage is true)
+ */
+function showModal(message, deleteImage = false, event = null) {
+  // Create Modal
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  if (deleteImage) modal.id = "remove-" + event.target.parentNode.parentNode.parentNode.id;
+
+  // Create Confirm Button
+  const confirmButton = document.createElement("button");
+  confirmButton.textContent = "Confirm";
+  confirmButton.addEventListener("click", removeImage);
+
+  // Create Cancel Button
+  const removeButton = document.createElement("button");
+  removeButton.textContent = "Close";
+  removeButton.addEventListener("click", cancelModal);
+
+  // Create message container
+  const messageContainer = document.createElement("p");
+  messageContainer.innerText = message;
+
+  // Create button container
+  const btnContainer = document.createElement("div");
+  btnContainer.classList.add("modal-buttons");
+
+  // Build Modal
+  if (deleteImage) btnContainer.appendChild(confirmButton);
+  btnContainer.appendChild(removeButton);
+  modal.appendChild(messageContainer);
+  modal.appendChild(btnContainer);
+  main.appendChild(modal);
+}
