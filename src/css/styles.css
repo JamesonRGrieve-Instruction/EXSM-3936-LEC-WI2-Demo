@@ -13,6 +13,9 @@ footer {
   max-width: 1200px;
   margin: 0 auto;
 }
+button {
+  cursor: pointer;
+}
 main {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -98,10 +101,6 @@ h2 {
 .modal .modal-buttons {
   display: flex;
   gap: 1rem;
-}
-
-.modal .modal-buttons button {
-  cursor: pointer;
 }
 
 header input {
