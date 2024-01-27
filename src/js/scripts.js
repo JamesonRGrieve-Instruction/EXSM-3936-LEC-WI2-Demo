@@ -177,13 +177,13 @@ submitButton.addEventListener("click", (event) => {
 
   // Build Container
   const newImageContainer = document.createElement("div");
-  newImageContainer.id = nameInput.value.replaceAll(" ", "-").toLowerCase();
+  newImageContainer.id = nameInput.value.trim().replaceAll(" ", "-").toLowerCase();
   newImageContainer.classList.add("image-container");
   const newImageContainerTitleBar = document.createElement("div");
 
   // Build Heading
   const newImageHeading = document.createElement("h2");
-  newImageHeading.textContent = nameInput.value;
+  newImageHeading.textContent = nameInput.value.trim();
   // Build Icon Buttons
   const newImageIconButtons = document.createElement("span");
   // Create Edit Button
@@ -198,12 +198,12 @@ submitButton.addEventListener("click", (event) => {
 
   // Build Image
   const newImage = document.createElement("img");
-  newImage.src = urlInput.value;
-  newImage.alt = nameInput.value;
+  newImage.src = urlInput.value.trim();
+  newImage.alt = nameInput.value.trim();
   // Build Tags
   const newImageTags = document.createElement("ul");
   // For each tag in the input, create a new li element.
-  for (const tag of tagInput.value.split(" ")) {
+  for (const tag of tagInput.value.trim().split(" ")) {
     const newImageTag = document.createElement("li");
     const newImageTagA = document.createElement("a");
     // Prevent the link from trying to navigate.
@@ -227,6 +227,14 @@ submitButton.addEventListener("click", (event) => {
     checkForExistingImage(newImageHeading.textContent, newImageContainer.id);
     main.appendChild(newImageContainer);
     sortImageContainers();
+
+    // remove input values
+    urlInput.value = "";
+    nameInput.value = "";
+    tagInput.value = "";
+    // reset search
+    searchInput.value = "";
+    searchInput.dispatchEvent(new Event("input"));
   } catch (error) {
     showModal(error.message);
     console.error(error);
