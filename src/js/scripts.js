@@ -4,8 +4,19 @@ const urlInput = document.querySelector("#input-url");
 const nameInput = document.querySelector("#input-name");
 const tagInput = document.querySelector("#input-tags");
 const searchInput = document.querySelector("#input-search");
+
+function checkForExistingImage(newTitle, newId) {
+  const existingTitles = Array.from(document.querySelectorAll(".image-container h2")).map((element) =>
+    element.textContent.toLowerCase(),
+  );
+  const existingIds = Array.from(document.querySelectorAll(".image-container[id$='-clone']")).map((element) => element.id);
+  const updatedTitle = newTitle.toLowerCase();
+  if (existingTitles.includes(updatedTitle) || existingIds.includes(newId)) {
+    throw new Error("Image already exists");
+  }
+}
+
 function clickSave(event) {
-  // This function changes the input back into an h2 containing the same text as the input did, changes the save button into an edit button, and changes the cancel button into a clone button.
   const target = event.target.parentNode.parentNode.parentNode;
   const name = target.querySelector("input");
   const editButton = document.createElement("i");
@@ -17,10 +28,20 @@ function clickSave(event) {
   const saveButton = target.querySelector(".fa-save");
   const cancelButton = target.querySelector(".fa-times");
   const nameHeading = document.createElement("h2");
-  nameHeading.textContent = name.value;
-  name.replaceWith(nameHeading);
-  saveButton.replaceWith(editButton);
-  cancelButton.replaceWith(cloneButton);
+  try {
+    const updatedId = name.value.replaceAll(" ", "-");
+    checkForExistingImage(name.value, updatedId);
+    nameHeading.textContent = name.value;
+    name.replaceWith(nameHeading);
+
+    // Update the ID to match the schema
+    target.id = updatedId;
+
+    saveButton.replaceWith(editButton);
+    cancelButton.replaceWith(cloneButton);
+  } catch (error) {
+    console.error(error);
+  }
 }
 function clickCancel(event) {
   // This function changes the input back into an h2 containing the same text as the input did, changes the save button into an edit button, and changes the cancel button into a clone button.
@@ -64,8 +85,10 @@ function clickEdit(event) {
 function clickClone(event) {
   const target = event.target.parentNode.parentNode.parentNode;
   const clone = target.cloneNode(true);
-  clone.querySelector(".fa-trash-can").addEventListener("click", clickRemove);
+  clone.querySelector("h2").innerText += " Clone";
+  clone.querySelector(".fa-pen-to-square").addEventListener("click", clickEdit);
   clone.querySelector(".fa-clone").addEventListener("click", clickClone);
+  clone.querySelector(".fa-trash-can").addEventListener("click", clickRemove);
   for (const tag of clone.querySelectorAll("li>a")) {
     tag.addEventListener("click", (event) => {
       event.preventDefault();
@@ -74,7 +97,12 @@ function clickClone(event) {
     });
   }
   clone.id = target.id + "-clone";
-  main.appendChild(clone);
+  try {
+    checkForExistingImage(clone.querySelector("h2").innerText, clone.id);
+    main.appendChild(clone);
+  } catch (error) {
+    console.error(error);
+  }
 }
 function clickRemove(event) {
   // Create Modal
@@ -159,7 +187,12 @@ submitButton.addEventListener("click", (event) => {
   newImageContainer.appendChild(newImageContainerTitleBar);
   newImageContainer.appendChild(newImage);
   newImageContainer.appendChild(newImageTags);
-  main.appendChild(newImageContainer);
+  try {
+    checkForExistingImage(newImageHeading.textContent, newImageContainer.id);
+    main.appendChild(newImageContainer);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 searchInput.addEventListener("input", (event) => {
