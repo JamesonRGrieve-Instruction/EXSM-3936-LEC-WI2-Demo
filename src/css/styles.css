@@ -1,123 +1,138 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: bisque;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: bisque;
 }
-header, main, footer {
-    max-width: 1200px;
-    margin: 0 auto;
+header,
+main,
+footer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+button {
+  cursor: pointer;
 }
 main {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0.5rem;
 }
 .image-container {
-    border: 2px solid #ccc;
-    border-radius: 0.5rem;
+  border: 2px solid #ccc;
+  border-radius: 0.5rem;
 }
 .image-container div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
 }
 .image-container div span i {
-    cursor: pointer;
-    color: rgb(158, 116, 65);
-    font-size: 2rem;
-    font-weight: bolder;
-    margin: 0 0.5rem;
+  cursor: pointer;
+  color: rgb(158, 116, 65);
+  font-size: 2rem;
+  font-weight: bolder;
+  margin: 0 0.5rem;
 }
 .image-container div span i:hover {
-    cursor: pointer;
-    color: red;
+  cursor: pointer;
+  color: red;
 }
 img {
-    width: 100%;
+  width: 100%;
 }
 h1 {
-    text-align: center;
-    margin: 0.5rem 0;
+  text-align: center;
+  margin: 0.5rem 0;
 }
 h2 {
-    text-align: center;
-    margin: 0.5rem 0;
-    display: inline-block;
+  text-align: center;
+  margin: 0.5rem 0;
+  display: inline-block;
 }
 .image-container span {
-    display: inline-block;
+  display: inline-block;
 }
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    animation: slideIn 0.5s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: slideIn 0.5s ease-out;
 }
+
 @keyframes slideIn {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: translateY(0);
-    }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 .modal::after {
-    content: '';
-    position: absolute;
-    width: 50%;
-    max-width: 500px;
-    height: 60%;
-    max-height: 300px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 3px solid #ccc;
-    border-radius: 2rem;
-    padding: 20px;
+  content: "";
+  position: absolute;
+  width: 50%;
+  max-width: 500px;
+  height: 60%;
+  max-height: 300px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 3px solid #ccc;
+  border-radius: 2rem;
+  padding: 20px;
 }
 .modal > * {
-    z-index: 1;
+  z-index: 1;
 }
+
+.modal .modal-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
 header input {
-    width: 100%;
+  width: 100%;
 }
-input, button {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 1rem;
+input,
+button {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
 }
 footer form {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
 }
 ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.8rem;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
 }
 li {
-    background-color: #ccc;
-    border: 2px solid rgb(158, 116, 65);
-    border-radius: 0.5rem;
-    padding: 0.5rem;
+  background-color: #ccc;
+  border: 2px solid rgb(158, 116, 65);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 li a {
-    text-decoration: none;
-    font-weight: bolder;
+  text-decoration: none;
+  font-weight: bolder;
 }
