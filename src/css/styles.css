@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1, p {
+    text-align: center;
+    margin: 20px 0;
+}
+main {
+    width: 620px;
+    height: 620px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+}
+main div {
+    border: 5px solid #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 124pt;
+    font-weight: bolder;
+}
+main div:hover {
+    background-color: #3d87ac;
+    border-color: #0c81bb;
+    color: #fff;
+}
