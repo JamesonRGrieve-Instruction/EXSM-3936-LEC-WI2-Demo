@@ -1,0 +1,28 @@
+name: Feature Request / Enhancement
+description: Suggest a new feature or feature enhancement for the project.
+labels: ['feature']
+body:
+  - type: markdown
+    attributes:
+      value: '## Feature Implementation'
+  - type: textarea
+    id: problem
+    attributes:
+      label: 'Feature Description'
+      description: 'Describe the problem you are trying to solve or the limitation you are facing.'
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 'Alternatives Considered'
+      description: 'List any alternative solutions or features you have considered.'
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 'Additional Context'
+      description: 'Provide any additional context or information about the feature request (e.g., screenshots, mockups, etc.)'
+    validations:
+      required: false
