@@ -34,7 +34,16 @@ function selectPiece(event) {
   const targetPiece = event.target;
   if (targetPiece.tagName === "I" && document.querySelector(".selected") === null) {
     targetPiece.classList.add("selected");
-    let possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    let possibleMoves;
+    if (targetPiece.classList.contains("fa-chess-pawn")) {
+      if (targetPiece.classList.contains(blackClass)) {
+        possibleMoves = flagPossibleMoves("pawn-black", targetPiece.parentElement.id);
+      } else if (targetPiece.classList.contains(whiteClass)) {
+        possibleMoves = flagPossibleMoves("pawn-white", targetPiece.parentElement.id);
+      }
+    } else {
+      possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    }
     possibleMoves = filterObstructedMoves(
       targetPiece.classList[0].split("-")[2],
       targetPiece.parentElement.id,
@@ -71,16 +80,45 @@ function flagPossibleMoves(pieceType, origin) {
   // origin is a string representing a space in chess notation, pieceType is a string representing the name of the piece in lowercase
   const possibleMoves = [];
   const [col, row] = origin.split("");
-  if (pieceType === "pawn") {
-    // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
-    possibleMoves.push(`${col}${parseInt(row) + 1}`);
-    possibleMoves.push(`${col}${parseInt(row) + 2}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`);
-    possibleMoves.push(`${col}${parseInt(row) - 1}`);
-    possibleMoves.push(`${col}${parseInt(row) - 2}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`);
+  console.log(col, row);
+  if (pieceType === "pawn-white") {
+    // Move ahead
+    const aheadOne = `${col}${parseInt(row) + 1}`;
+    const aheadTwo = `${col}${parseInt(row) + 2}`;
+    const aheadOneBox = gameBoard.querySelector(`#${aheadOne}`);
+    const aheadTwoBox = gameBoard.querySelector(`#${aheadTwo}`);
+    if (aheadOneBox.children.length === 0) possibleMoves.push(aheadOne);
+    if (row === "2" && aheadTwoBox.children.length === 0) possibleMoves.push(aheadTwo);
+    // Move diagonally if capturing
+    if (col !== "a") {
+      const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`;
+      const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
+      if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
+    }
+    if (col !== "h") {
+      const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`;
+      const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
+      if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
+    }
+  } else if (pieceType === "pawn-black") {
+    // Move ahead
+    const aheadOne = `${col}${parseInt(row) - 1}`;
+    const aheadTwo = `${col}${parseInt(row) - 2}`;
+    const aheadOneBox = gameBoard.querySelector(`#${aheadOne}`);
+    const aheadTwoBox = gameBoard.querySelector(`#${aheadTwo}`);
+    if (aheadOneBox.children.length === 0) possibleMoves.push(aheadOne);
+    if (row === "7" && aheadTwoBox.children.length === 0) possibleMoves.push(aheadTwo);
+    // Move diagonally if capturing
+    if (col !== "a") {
+      const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`;
+      const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
+      if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
+    }
+    if (col !== "h") {
+      const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`;
+      const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
+      if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
+    }
   } else if (pieceType === "rook") {
     for (let i = 97; i <= 104; i++) {
       possibleMoves.push(`${String.fromCharCode(i)}${row}`);
@@ -168,18 +206,21 @@ function filterObstructedMoves(pieceType, origin, possibleMoves, team) {
   const [col, row] = origin.split("");
   let filteredMoves = [...possibleMoves]; // Create a copy of possibleMoves to avoid modifying it while iterating
 
-  if (pieceType === "pawn") {
-    // If the pawn is moving forward, remove the space behind it from the possible moves
-    if (team === "black") {
-      filteredMoves = filteredMoves.filter((space) => {
-        return space !== `${col}${parseInt(row) - 1}`;
-      });
-    } else {
-      filteredMoves = filteredMoves.filter((space) => {
-        return space !== `${col}${parseInt(row) + 1}`;
-      });
-    }
-  }
+  // the possible pawn moves are implemented inside flagPossibleMoves()
+  // this code was preventing the pawn from being able to move one space ahead
+  //
+  // if (pieceType === "pawn") {
+  //   // If the pawn is moving forward, remove the space behind it from the possible moves
+  //   if (team === "black") {
+  //     filteredMoves = filteredMoves.filter((space) => {
+  //       return space !== `${col}${parseInt(row) - 1}`;
+  //     });
+  //   } else {
+  //     filteredMoves = filteredMoves.filter((space) => {
+  //       return space !== `${col}${parseInt(row) + 1}`;
+  //     });
+  //   }
+  // }
 
   // Remove any spaces that are occupied by a piece of the same team
   filteredMoves = filteredMoves.filter((move) => {
