@@ -70,7 +70,7 @@ i:hover {
 /* TODO: Make this work in a better way than making up a class to break specificity. */
 main > div > div.possible:not(.imaginary) {
   background-color: #abde78;
-  border-color: #0c81bb;
+  border: 5px solid #0c81bb;
 }
 aside {
   display: flex;
