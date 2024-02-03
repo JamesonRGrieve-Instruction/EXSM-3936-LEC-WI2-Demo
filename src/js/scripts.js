@@ -83,9 +83,11 @@ function flagPossibleMoves(pieceType, origin) {
   if (pieceType === "pawn-white") {
     // Move ahead
     const aheadOne = `${col}${parseInt(row) + 1}`;
-    const aheadBox = gameBoard.querySelector(`#${aheadOne}`);
-    if (aheadBox.children.length === 0) possibleMoves.push(aheadOne);
-    if (row === "2") possibleMoves.push(`${col}${parseInt(row) + 2}`);
+    const aheadTwo = `${col}${parseInt(row) + 2}`;
+    const aheadOneBox = gameBoard.querySelector(`#${aheadOne}`);
+    const aheadTwoBox = gameBoard.querySelector(`#${aheadTwo}`);
+    if (aheadOneBox.children.length === 0) possibleMoves.push(aheadOne);
+    if (row === "2" && aheadTwoBox.children.length === 0) possibleMoves.push(aheadTwo);
     // Move diagonally if capturing
     const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`;
     const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`;
@@ -96,9 +98,11 @@ function flagPossibleMoves(pieceType, origin) {
   } else if (pieceType === "pawn-black") {
     // Move ahead
     const aheadOne = `${col}${parseInt(row) - 1}`;
-    const aheadBox = gameBoard.querySelector(`#${aheadOne}`);
-    if (aheadBox.children.length === 0) possibleMoves.push(aheadOne);
-    if (row === "7") possibleMoves.push(`${col}${parseInt(row) - 2}`);
+    const aheadTwo = `${col}${parseInt(row) - 2}`;
+    const aheadOneBox = gameBoard.querySelector(`#${aheadOne}`);
+    const aheadTwoBox = gameBoard.querySelector(`#${aheadTwo}`);
+    if (aheadOneBox.children.length === 0) possibleMoves.push(aheadOne);
+    if (row === "7" && aheadTwoBox.children.length === 0) possibleMoves.push(aheadTwo);
     // Move diagonally if capturing
     const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`;
     const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`;
