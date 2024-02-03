@@ -34,8 +34,8 @@ function selectPiece(event) {
   const targetPiece = event.target;
   if (targetPiece.tagName === "I" && document.querySelector(".selected") === null) {
     targetPiece.classList.add("selected");
-    const possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
-    filterObstructedMoves(
+    let possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    possibleMoves = filterObstructedMoves(
       targetPiece.classList[0].split("-")[2],
       targetPiece.parentElement.id,
       possibleMoves,
@@ -157,7 +157,8 @@ function flagPossibleMoves(pieceType, origin) {
   }
   // Remove any spaces that are outside the bounds of the board (a-h, 1-8)
   return possibleMoves.filter((space) => {
-    const [col, row] = space.split("");
+    const col = space[0];
+    const row = space.slice(1);
     return col.charCodeAt(0) >= 97 && col.charCodeAt(0) <= 104 && row >= 1 && row <= 8;
   });
 }
@@ -165,33 +166,59 @@ function flagPossibleMoves(pieceType, origin) {
 // Copilot generated this, untested.
 function filterObstructedMoves(pieceType, origin, possibleMoves, team) {
   const [col, row] = origin.split("");
+  let filteredMoves = [...possibleMoves]; // Create a copy of possibleMoves to avoid modifying it while iterating
+
   if (pieceType === "pawn") {
     // If the pawn is moving forward, remove the space behind it from the possible moves
     if (team === "black") {
-      possibleMoves = possibleMoves.filter((space) => {
+      filteredMoves = filteredMoves.filter((space) => {
         return space !== `${col}${parseInt(row) - 1}`;
       });
     } else {
-      possibleMoves = possibleMoves.filter((space) => {
+      filteredMoves = filteredMoves.filter((space) => {
         return space !== `${col}${parseInt(row) + 1}`;
       });
     }
   }
+
   // Remove any spaces that are occupied by a piece of the same team
-  for (const move of possibleMoves) {
+  filteredMoves = filteredMoves.filter((move) => {
+    console.log("Attempting to fiter", move);
     const targetSpace = gameBoard.querySelector(`#${move}`);
     if (targetSpace.children.length > 0) {
       const targetPiece = targetSpace.children[0];
-      if (team === "black" && targetPiece.classList.contains(blackClass)) {
-        possibleMoves = possibleMoves.filter((space) => {
-          return space !== move;
-        });
-      } else if (team === "white" && targetPiece.classList.contains(whiteClass)) {
-        possibleMoves = possibleMoves.filter((space) => {
-          return space !== move;
-        });
+      if (
+        (team === "black" && targetPiece.classList.contains(blackClass)) ||
+        (team === "white" && targetPiece.classList.contains(whiteClass))
+      ) {
+        return false;
       }
     }
+    return true;
+  });
+
+  // Remove any spaces that are blocked by a piece of any team (but keep spaces occupied by an enemy piece)
+  if (pieceType !== "knight") {
+    filteredMoves = filteredMoves.filter((move) => {
+      const targetCol = move.split("")[0];
+      const targetRow = move.split("")[1];
+      const colDiff = targetCol.charCodeAt(0) - col.charCodeAt(0);
+      const rowDiff = targetRow - row;
+      if (colDiff !== 0 || rowDiff !== 0) {
+        for (let i = 1; i < Math.max(Math.abs(colDiff), Math.abs(rowDiff)); i++) {
+          const colStep = colDiff === 0 ? 0 : colDiff / Math.abs(colDiff);
+          const rowStep = rowDiff === 0 ? 0 : rowDiff / Math.abs(rowDiff);
+          const obstructedSpace = gameBoard.querySelector(
+            `#${String.fromCharCode(col.charCodeAt(0) + i * colStep)}${parseInt(row) + i * rowStep}`,
+          );
+          if (obstructedSpace && obstructedSpace.children.length > 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    });
   }
-  return possibleMoves;
+
+  return filteredMoves;
 }
