@@ -34,7 +34,16 @@ function selectPiece(event) {
   const targetPiece = event.target;
   if (targetPiece.tagName === "I" && document.querySelector(".selected") === null) {
     targetPiece.classList.add("selected");
-    let possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    let possibleMoves;
+    if (targetPiece.classList.contains("fa-chess-pawn")) {
+      if (targetPiece.classList.contains("fa-solid")) {
+        possibleMoves = flagPossibleMoves("pawn-black", targetPiece.parentElement.id);
+      } else if (targetPiece.classList.contains("fa-regular")) {
+        possibleMoves = flagPossibleMoves("pawn-white", targetPiece.parentElement.id);
+      }
+    } else {
+      possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    }
     possibleMoves = filterObstructedMoves(
       targetPiece.classList[0].split("-")[2],
       targetPiece.parentElement.id,
@@ -71,12 +80,14 @@ function flagPossibleMoves(pieceType, origin) {
   // origin is a string representing a space in chess notation, pieceType is a string representing the name of the piece in lowercase
   const possibleMoves = [];
   const [col, row] = origin.split("");
-  if (pieceType === "pawn") {
+  if (pieceType === "pawn-white") {
     // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
     possibleMoves.push(`${col}${parseInt(row) + 1}`);
     possibleMoves.push(`${col}${parseInt(row) + 2}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`);
+  } else if (pieceType === "pawn-black") {
+    // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
     possibleMoves.push(`${col}${parseInt(row) - 1}`);
     possibleMoves.push(`${col}${parseInt(row) - 2}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`);
