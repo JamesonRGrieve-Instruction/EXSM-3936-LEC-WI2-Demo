@@ -63,7 +63,10 @@ i:hover {
   background-color: #3d87ac;
   border-color: #0c81bb;
 }
-
+.selected {
+  background-color: #3d87ac;
+  border-color: #0c81bb;
+}
 aside {
   display: flex;
   align-items: center;
