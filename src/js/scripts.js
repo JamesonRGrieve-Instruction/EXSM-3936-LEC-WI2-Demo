@@ -32,7 +32,7 @@ generateBoard(gameBoard);
 function selectPiece(event) {
   event.stopPropagation();
   const targetPiece = event.target;
-  if (targetPiece.tagName === "I") {
+  if (targetPiece.tagName === "I" && document.querySelector(".selected") === null) {
     targetPiece.classList.add("selected");
     const possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
     console.log(possibleMoves);
