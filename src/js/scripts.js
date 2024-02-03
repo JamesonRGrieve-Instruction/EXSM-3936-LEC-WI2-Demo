@@ -29,28 +29,41 @@ function generateBoard(target) {
 }
 generateBoard(gameBoard);
 
+// clear possible moves from board
+function clearPossibleMoves(board) {
+  const possibleMoves = board.querySelectorAll(".possible");
+  for (const moves of possibleMoves) {
+    moves.classList.remove("possible");
+  }
+}
+
 function selectPiece(event) {
   event.stopPropagation();
   const targetPiece = event.target;
-  if (targetPiece.tagName === "I" && document.querySelector(".selected") === null) {
-    targetPiece.classList.add("selected");
-    let possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
-    possibleMoves = filterObstructedMoves(
-      targetPiece.classList[0].split("-")[2],
-      targetPiece.parentElement.id,
-      possibleMoves,
-      targetPiece.classList.contains(blackClass) ? "black" : "white",
-    );
-    console.log(possibleMoves);
-    for (const move of possibleMoves) {
-      gameBoard.querySelector(`#${move}`).classList.add("possible");
+  if (targetPiece.classList.contains("selected")) {
+    targetPiece.classList.remove("selected");
+    clearPossibleMoves(gameBoard);
+  } else {
+    if (targetPiece.tagName === "I" && document.querySelector(".selected") === null) {
+      targetPiece.classList.add("selected");
+      let possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+      possibleMoves = filterObstructedMoves(
+        targetPiece.classList[0].split("-")[2],
+        targetPiece.parentElement.id,
+        possibleMoves,
+        targetPiece.classList.contains(blackClass) ? "black" : "white",
+      );
+      console.log(possibleMoves);
+      for (const move of possibleMoves) {
+        gameBoard.querySelector(`#${move}`).classList.add("possible");
+      }
+      //const oldCell = piece.parentElement;
+      //const oldRow = oldCell.parentElement;
+      //const oldCol = oldRow.id;
+      //const newRow = gameBoard.querySelector("#row-5");
+      //const newCell = newRow.querySelector("#d5");
+      //newCell.appendChild(piece);
     }
-    //const oldCell = piece.parentElement;
-    //const oldRow = oldCell.parentElement;
-    //const oldCol = oldRow.id;
-    //const newRow = gameBoard.querySelector("#row-5");
-    //const newCell = newRow.querySelector("#d5");
-    //newCell.appendChild(piece);
   }
 }
 function movePiece(event) {
