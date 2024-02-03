@@ -5,6 +5,8 @@ const nameInput = document.querySelector("#input-name");
 const tagInput = document.querySelector("#input-tags");
 const searchInput = document.querySelector("#input-search");
 
+let modalOpen = false;
+
 function sortImageContainers() {
   const imageContainers = Array.from(document.querySelectorAll(".image-container"));
   const sortedContainers = imageContainers.sort((a, b) => {
@@ -161,9 +163,11 @@ function removeImage(event) {
   const target = document.querySelector("#" + event.target.parentNode.parentNode.id.replace("remove-", ""));
   target.remove();
   event.target.parentNode.parentNode.remove();
+  modalOpen = false;
 }
 function cancelModal(event) {
   event.target.parentNode.parentNode.remove();
+  modalOpen = false;
 }
 
 submitButton.addEventListener("click", (event) => {
@@ -267,6 +271,9 @@ searchInput.addEventListener("input", (event) => {
  * @param {Event | Null} event - Event that was used to open modal (only used if removeImage is true)
  */
 function showModal(message, deleteImage = false, event = null) {
+  // check if modal is already open
+  if (modalOpen) return;
+
   // Create Modal
   const modal = document.createElement("div");
   modal.classList.add("modal");
@@ -297,4 +304,6 @@ function showModal(message, deleteImage = false, event = null) {
   modal.appendChild(messageContainer);
   modal.appendChild(btnContainer);
   main.appendChild(modal);
+
+  modalOpen = true;
 }
