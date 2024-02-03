@@ -36,9 +36,9 @@ function selectPiece(event) {
     targetPiece.classList.add("selected");
     let possibleMoves;
     if (targetPiece.classList.contains("fa-chess-pawn")) {
-      if (targetPiece.classList.contains("fa-solid")) {
+      if (targetPiece.classList.contains(blackClass)) {
         possibleMoves = flagPossibleMoves("pawn-black", targetPiece.parentElement.id);
-      } else if (targetPiece.classList.contains("fa-regular")) {
+      } else if (targetPiece.classList.contains(whiteClass)) {
         possibleMoves = flagPossibleMoves("pawn-white", targetPiece.parentElement.id);
       }
     } else {
@@ -81,18 +81,31 @@ function flagPossibleMoves(pieceType, origin) {
   const possibleMoves = [];
   const [col, row] = origin.split("");
   if (pieceType === "pawn-white") {
-    // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
-    console.log(row);
-    possibleMoves.push(`${col}${parseInt(row) + 1}`);
+    // Move ahead
+    const aheadOne = `${col}${parseInt(row) + 1}`;
+    const aheadBox = gameBoard.querySelector(`#${aheadOne}`);
+    if (aheadBox.children.length === 0) possibleMoves.push(aheadOne);
     if (row === "2") possibleMoves.push(`${col}${parseInt(row) + 2}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`);
+    // Move diagonally if capturing
+    const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`;
+    const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`;
+    const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
+    const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
+    if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
+    if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
   } else if (pieceType === "pawn-black") {
-    // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
-    possibleMoves.push(`${col}${parseInt(row) - 1}`);
+    // Move ahead
+    const aheadOne = `${col}${parseInt(row) - 1}`;
+    const aheadBox = gameBoard.querySelector(`#${aheadOne}`);
+    if (aheadBox.children.length === 0) possibleMoves.push(aheadOne);
     if (row === "7") possibleMoves.push(`${col}${parseInt(row) - 2}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`);
-    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`);
+    // Move diagonally if capturing
+    const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`;
+    const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`;
+    const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
+    const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
+    if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
+    if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
   } else if (pieceType === "rook") {
     for (let i = 97; i <= 104; i++) {
       possibleMoves.push(`${String.fromCharCode(i)}${row}`);
@@ -180,7 +193,9 @@ function filterObstructedMoves(pieceType, origin, possibleMoves, team) {
   const [col, row] = origin.split("");
   let filteredMoves = [...possibleMoves]; // Create a copy of possibleMoves to avoid modifying it while iterating
 
-  // this is implemented inside flagPossibleMoves()
+  // the possible pawn moves are implemented inside flagPossibleMoves()
+  // this code was preventing the pawn from being able to move one space ahead
+  //
   // if (pieceType === "pawn") {
   //   // If the pawn is moving forward, remove the space behind it from the possible moves
   //   if (team === "black") {
