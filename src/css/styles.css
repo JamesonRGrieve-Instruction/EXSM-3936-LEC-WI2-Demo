@@ -63,3 +63,13 @@ i:hover {
   background-color: #3d87ac;
   border-color: #0c81bb;
 }
+
+aside {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 120px;
+  border: 10px solid #714800;
+  margin: 10px auto;
+}
