@@ -50,13 +50,14 @@ function selectPiece(event) {
 function movePiece(event) {
   const targetSpace = event.target;
   const selectedPiece = gameBoard.querySelector(".selected");
-  if (selectedPiece) {
+  if (selectedPiece && targetSpace.classList.contains("possible")) {
     targetSpace.appendChild(selectedPiece);
     selectedPiece.classList.remove("selected");
-  }
-  const possibleMoves = gameBoard.querySelectorAll(".possible");
-  for (const move of possibleMoves) {
-    move.classList.remove("possible");
+
+    const possibleMoves = gameBoard.querySelectorAll(".possible");
+    for (const move of possibleMoves) {
+      move.classList.remove("possible");
+    }
   }
 }
 function flagPossibleMoves(pieceType, origin) {

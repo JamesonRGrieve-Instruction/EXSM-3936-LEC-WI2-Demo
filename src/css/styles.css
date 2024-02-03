@@ -71,6 +71,7 @@ i:hover {
 main > div > div.possible:not(.imaginary) {
   background-color: #abde78;
   border: 5px solid #0c81bb;
+  cursor: pointer;
 }
 aside {
   display: flex;
