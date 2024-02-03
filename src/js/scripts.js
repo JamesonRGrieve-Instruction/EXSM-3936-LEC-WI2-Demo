@@ -82,3 +82,24 @@ function flagPossibleMoves(pieceType, origin) {
     return col.charCodeAt(0) >= 97 && col.charCodeAt(0) <= 104 && row >= 1 && row <= 8;
   });
 }
+/*
+// Copilot generated this, untested.
+function filterPawnMoves(possibleMoves, origin, isBlack) {
+  // Remove any spaces that are occupied by a piece of the same color
+  const filteredMoves = [];
+  for (const move of possibleMoves) {
+    const targetSpace = gameBoard.querySelector(`#${move}`);
+    if (targetSpace.children.length === 0) {
+      filteredMoves.push(move);
+    } else {
+      const targetPiece = targetSpace.children[0];
+      if (isBlack && targetPiece.classList.contains(blackClass)) {
+        filteredMoves.push(move);
+      } else if (!isBlack && targetPiece.classList.contains(whiteClass)) {
+        filteredMoves.push(move);
+      }
+    }
+  }
+  return filteredMoves;
+}
+*/
