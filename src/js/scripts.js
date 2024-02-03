@@ -82,14 +82,15 @@ function flagPossibleMoves(pieceType, origin) {
   const [col, row] = origin.split("");
   if (pieceType === "pawn-white") {
     // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
+    console.log(row);
     possibleMoves.push(`${col}${parseInt(row) + 1}`);
-    possibleMoves.push(`${col}${parseInt(row) + 2}`);
+    if (row === "2") possibleMoves.push(`${col}${parseInt(row) + 2}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`);
   } else if (pieceType === "pawn-black") {
     // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
     possibleMoves.push(`${col}${parseInt(row) - 1}`);
-    possibleMoves.push(`${col}${parseInt(row) - 2}`);
+    if (row === "7") possibleMoves.push(`${col}${parseInt(row) - 2}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`);
   } else if (pieceType === "rook") {
