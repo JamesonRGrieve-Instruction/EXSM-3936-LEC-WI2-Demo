@@ -54,18 +54,13 @@ function movePiece(event) {
 function flagPossibleMoves(pieceType, origin) {
   // Considering pieceType and origin, return an array of all possible spaces on the board (not consider which spaces are occupied)
   // origin is a string representing a space in chess notation, pieceType is a string representing the name of the piece in lowercase
-  console.log("Piece Type", pieceType);
-  console.log("Origin", origin);
   const possibleMoves = [];
-
   if (pieceType === "pawn") {
     // For now, return the space in front of the pawn and its two diagonals, the rest of the logic will be handled elsewhere
     const [col, row] = origin.split("");
-    console.log("Origin Destructured", col, row);
     possibleMoves.push(`${col}${parseInt(row) + 1}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`);
   }
-
   console.log(possibleMoves);
 }
