@@ -80,6 +80,7 @@ function flagPossibleMoves(pieceType, origin) {
   // origin is a string representing a space in chess notation, pieceType is a string representing the name of the piece in lowercase
   const possibleMoves = [];
   const [col, row] = origin.split("");
+  console.log(col, row);
   if (pieceType === "pawn-white") {
     // Move ahead
     const aheadOne = `${col}${parseInt(row) + 1}`;
@@ -89,12 +90,16 @@ function flagPossibleMoves(pieceType, origin) {
     if (aheadOneBox.children.length === 0) possibleMoves.push(aheadOne);
     if (row === "2" && aheadTwoBox.children.length === 0) possibleMoves.push(aheadTwo);
     // Move diagonally if capturing
-    const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`;
-    const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`;
-    const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
-    const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
-    if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
-    if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
+    if (col !== "a") {
+      const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`;
+      const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
+      if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
+    }
+    if (col !== "h") {
+      const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`;
+      const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
+      if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
+    }
   } else if (pieceType === "pawn-black") {
     // Move ahead
     const aheadOne = `${col}${parseInt(row) - 1}`;
@@ -104,12 +109,16 @@ function flagPossibleMoves(pieceType, origin) {
     if (aheadOneBox.children.length === 0) possibleMoves.push(aheadOne);
     if (row === "7" && aheadTwoBox.children.length === 0) possibleMoves.push(aheadTwo);
     // Move diagonally if capturing
-    const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`;
-    const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`;
-    const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
-    const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
-    if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
-    if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
+    if (col !== "a") {
+      const leftDiagonal = `${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`;
+      const leftBox = gameBoard.querySelector(`#${leftDiagonal}`);
+      if (leftBox.children.length > 0) possibleMoves.push(leftDiagonal);
+    }
+    if (col !== "h") {
+      const rightDiagonal = `${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`;
+      const rightBox = gameBoard.querySelector(`#${rightDiagonal}`);
+      if (rightBox.children.length > 0) possibleMoves.push(rightDiagonal);
+    }
   } else if (pieceType === "rook") {
     for (let i = 97; i <= 104; i++) {
       possibleMoves.push(`${String.fromCharCode(i)}${row}`);
