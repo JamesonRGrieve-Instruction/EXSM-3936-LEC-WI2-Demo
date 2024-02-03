@@ -3,7 +3,7 @@ const whiteClass = "fa-regular";
 const backRow = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
 const gameBoard = document.querySelector("main");
 function generateBoard(target) {
-  for (let rowNumber = 1; rowNumber <= 8; rowNumber++) {
+  for (let rowNumber = 8; rowNumber >= 1; rowNumber--) {
     const row = document.createElement("div");
     row.id = `row-${rowNumber}`;
     for (let colNumber = 97; colNumber <= 104; colNumber++) {
@@ -16,7 +16,7 @@ function generateBoard(target) {
         } else if (rowNumber === 2 || rowNumber === 7) {
           newPiece.classList.add(`fa-chess-pawn`);
         }
-        newPiece.classList.add(rowNumber <= 4 ? blackClass : whiteClass);
+        newPiece.classList.add(rowNumber >= 4 ? blackClass : whiteClass);
         cell.appendChild(newPiece);
       }
       row.appendChild(cell);
