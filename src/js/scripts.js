@@ -179,18 +179,19 @@ function filterObstructedMoves(pieceType, origin, possibleMoves, team) {
   const [col, row] = origin.split("");
   let filteredMoves = [...possibleMoves]; // Create a copy of possibleMoves to avoid modifying it while iterating
 
-  if (pieceType === "pawn") {
-    // If the pawn is moving forward, remove the space behind it from the possible moves
-    if (team === "black") {
-      filteredMoves = filteredMoves.filter((space) => {
-        return space !== `${col}${parseInt(row) - 1}`;
-      });
-    } else {
-      filteredMoves = filteredMoves.filter((space) => {
-        return space !== `${col}${parseInt(row) + 1}`;
-      });
-    }
-  }
+  // this is implemented inside flagPossibleMoves()
+  // if (pieceType === "pawn") {
+  //   // If the pawn is moving forward, remove the space behind it from the possible moves
+  //   if (team === "black") {
+  //     filteredMoves = filteredMoves.filter((space) => {
+  //       return space !== `${col}${parseInt(row) - 1}`;
+  //     });
+  //   } else {
+  //     filteredMoves = filteredMoves.filter((space) => {
+  //       return space !== `${col}${parseInt(row) + 1}`;
+  //     });
+  //   }
+  // }
 
   // Remove any spaces that are occupied by a piece of the same team
   filteredMoves = filteredMoves.filter((move) => {
