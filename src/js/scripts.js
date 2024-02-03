@@ -34,7 +34,11 @@ function selectPiece(event) {
   const targetPiece = event.target;
   if (targetPiece.tagName === "I") {
     targetPiece.classList.add("selected");
-    flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    const possibleMoves = flagPossibleMoves(targetPiece.classList[0].split("-")[2], targetPiece.parentElement.id);
+    console.log(possibleMoves);
+    for (const move of possibleMoves) {
+      gameBoard.querySelector(`#${move}`).classList.add("possible");
+    }
     //const oldCell = piece.parentElement;
     //const oldRow = oldCell.parentElement;
     //const oldCol = oldRow.id;
@@ -50,17 +54,30 @@ function movePiece(event) {
     targetSpace.appendChild(selectedPiece);
     selectedPiece.classList.remove("selected");
   }
+  const possibleMoves = gameBoard.querySelectorAll(".possible");
+  for (const move of possibleMoves) {
+    move.classList.remove("possible");
+  }
 }
 function flagPossibleMoves(pieceType, origin) {
   // Considering pieceType and origin, return an array of all possible spaces on the board (not consider which spaces are occupied)
   // origin is a string representing a space in chess notation, pieceType is a string representing the name of the piece in lowercase
   const possibleMoves = [];
   if (pieceType === "pawn") {
-    // For now, return the space in front of the pawn and its two diagonals, the rest of the logic will be handled elsewhere
+    // For now, return the space in front/behind of the pawn and its four diagonals, the rest of the logic will be handled elsewhere
     const [col, row] = origin.split("");
     possibleMoves.push(`${col}${parseInt(row) + 1}`);
+    possibleMoves.push(`${col}${parseInt(row) + 2}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) + 1}`);
     possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) + 1}`);
+    possibleMoves.push(`${col}${parseInt(row) - 1}`);
+    possibleMoves.push(`${col}${parseInt(row) - 2}`);
+    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) - 1)}${parseInt(row) - 1}`);
+    possibleMoves.push(`${String.fromCharCode(col.charCodeAt(0) + 1)}${parseInt(row) - 1}`);
   }
-  console.log(possibleMoves);
+  // Remove any spaces that are outside the bounds of the board (a-h, 1-8)
+  return possibleMoves.filter((space) => {
+    const [col, row] = space.split("");
+    return col.charCodeAt(0) >= 97 && col.charCodeAt(0) <= 104 && row >= 1 && row <= 8;
+  });
 }

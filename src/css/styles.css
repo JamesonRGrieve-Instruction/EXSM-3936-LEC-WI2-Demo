@@ -67,6 +67,11 @@ i:hover {
   background-color: #3d87ac;
   border-color: #0c81bb;
 }
+/* TODO: Make this work in a better way than making up a class to break specificity. */
+main > div > div.possible:not(.imaginary) {
+  background-color: #abde78;
+  border-color: #0c81bb;
+}
 aside {
   display: flex;
   align-items: center;
