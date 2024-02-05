@@ -24,6 +24,7 @@ main > div {
   grid-template-columns: repeat(8, 1fr);
 }
 main > div > div {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,12 +33,15 @@ main > div > div {
 
 main > div > div:nth-child(2n) {
   background-color: #000;
+  color: #fff;
 }
 main > div:nth-child(2n) > div:nth-child(2n + 1) {
   background-color: #000;
+  color: #fff;
 }
 main > div:nth-child(2n) > div:nth-child(2n) {
   background-color: #fff;
+  color: #000;
 }
 i {
   cursor: pointer;
@@ -81,4 +85,23 @@ aside {
   height: 120px;
   border: 10px solid #714800;
   margin: 10px auto;
+}
+
+span.board-label--letter,
+span.board-label--number {
+  pointer-events: none;
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+span.board-label--letter {
+  bottom: 5px;
+  right: 5px;
+}
+
+span.board-label--number {
+  top: 5px;
+  left: 5px;
 }

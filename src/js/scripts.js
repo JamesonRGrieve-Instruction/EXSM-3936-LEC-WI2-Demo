@@ -26,6 +26,22 @@ function generateBoard(target) {
     }
     target.appendChild(row);
   }
+
+  for (let i = 0; i < 8; i++) {
+    // label letters
+    const letterSquare = document.querySelector(`#${String.fromCharCode(i + 97)}1`);
+    const letterLabel = document.createElement("span");
+    letterLabel.innerText = String.fromCharCode(i + 97);
+    letterLabel.classList.add("board-label--letter");
+    letterSquare.appendChild(letterLabel);
+
+    // label numbers
+    const numberSquare = document.querySelector(`#a${i + 1}`);
+    const numberLabel = document.createElement("span");
+    numberLabel.innerText = i + 1;
+    numberLabel.classList.add("board-label--number");
+    numberSquare.appendChild(numberLabel);
+  }
 }
 generateBoard(gameBoard);
 
