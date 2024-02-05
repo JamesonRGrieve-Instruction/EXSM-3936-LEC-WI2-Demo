@@ -92,8 +92,6 @@ span.board-label--number {
   pointer-events: none;
   font-size: 1.2rem;
   position: absolute;
-  bottom: 5px;
-  right: 5px;
 }
 
 span.board-label--letter {
