@@ -10,6 +10,12 @@ p {
   margin: 20px 0;
 }
 
+#turn {
+  font-size: 1.5rem;
+  margin: 0 10px;
+  font-style: italic;
+}
+
 main {
   width: 800px;
   height: 800px;
