@@ -2,9 +2,16 @@
 /* global output, input */
 // eslint-disable-next-line no-unused-vars
 async function main() {
-  const tasks = [example("One", 1000), example("Two", 5000), example("Three", 2500)];
-  await Promise.all(tasks);
-  output("Done");
+  const data = (await (await fetch("https://randomuser.me/api/?inc=name,email,location&results=5")).json()).results;
+  // 1. Fetch (and await it).
+  // 2. Convert the response to JSON (and await it).
+  // 3. Pull the propert(ies) from the JSON that we care about.
+  // 4. Loop over the results and output the desired message.
+  for (const user of data) {
+    output(
+      `Hello, ${user.name.title} ${user.name.first} ${user.name.last} (${user.email}) of ${user.location.city} ${user.location.state}, ${user.location.country}!`,
+    );
+  }
 }
 async function example(text, timeout) {
   await sleep(timeout);
