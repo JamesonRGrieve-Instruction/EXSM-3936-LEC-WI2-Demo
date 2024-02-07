@@ -2,6 +2,8 @@ const blackClass = "fa-solid";
 const whiteClass = "fa-regular";
 const backRow = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
 const gameBoard = document.querySelector("main");
+let currentTurn = "white";
+document.querySelector("#turn").textContent = `Turn: ${currentTurn}`;
 
 function generateBoard(target) {
   for (let rowNumber = 8; rowNumber >= 1; rowNumber--) {
@@ -64,6 +66,8 @@ function movePiece(event) {
     for (const move of possibleMoves) {
       move.classList.remove("possible");
     }
+    currentPlayer = currentPlayer === "white" ? "black" : "white";
+    document.querySelector("#turn").textContent = `Turn: ${currentTurn}`;
   }
 }
 function flagPossibleMoves(pieceType, origin) {
