@@ -12,6 +12,23 @@ async function main() {
       `Hello, ${user.name.title} ${user.name.first} ${user.name.last} (${user.email}) of ${user.location.city} ${user.location.state}, ${user.location.country}!`,
     );
   }
+
+  const dataWithThen = fetch("https://randomuser.me/api/?inc=name,email,location&results=5")
+    .then((response) => {
+      if (response.ok) {
+        response.json();
+      } else {
+        throw new Error("Something went wrong.");
+      }
+    })
+    .then((jsonData) => jsonData.results)
+    .then((users) => {
+      for (const user of users) {
+        output(
+          `Hello, ${user.name.title} ${user.name.first} ${user.name.last} (${user.email}) of ${user.location.city} ${user.location.state}, ${user.location.country}!`,
+        );
+      }
+    });
 }
 async function example(text, timeout) {
   await sleep(timeout);
