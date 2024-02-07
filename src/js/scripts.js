@@ -15,10 +15,10 @@ async function main() {
 
   const dataWithThen = fetch("https://randomuser.me/api/?inc=name,email,location&results=5")
     .then((response) => {
-      if (response.ok) {
-        response.json();
-      } else {
+      if (!response.ok) {
         throw new Error("Something went wrong.");
+      } else {
+        return response.json();
       }
     })
     .then((jsonData) => jsonData.results)
