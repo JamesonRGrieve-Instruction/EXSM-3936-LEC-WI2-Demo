@@ -1,17 +1,9 @@
+img,
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
 .hidden {
   display: none;
-}
-
-main {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-main > div {
-  width: 100%;
-  border: 3px solid #ccc;
-  border-radius: 0.5rem;
 }
