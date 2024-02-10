@@ -1,13 +1,13 @@
 const jokeButton = document.querySelector("#getJoke");
 const main = document.querySelector("main");
 const displayedJokeIDs = [];
+
 async function getJoke() {
-  const joke = await fetch("https://v2.jokeapi.dev/joke/Programming?safe-mode");
-  if (!joke.ok) {
+  const joke = await axios.get("https://v2.jokeapi.dev/joke/Programming?safe-mode");
+  if (joke.status !== 200) {
     throw new Error(`Failed to fetch joke with status ${joke.status}: ${joke.statusText}.`);
   }
-  const jokeData = await joke.json();
-  return jokeData;
+  return joke.data;
 }
 jokeButton.addEventListener("click", async () => {
   let joke = await getJoke();
