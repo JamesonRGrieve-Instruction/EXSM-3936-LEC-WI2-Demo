@@ -4,6 +4,10 @@ img,
   height: 100px;
   display: block;
 }
+.image-large {
+  width: 500px;
+  height: 500px;
+}
 .hidden {
   display: none;
 }
