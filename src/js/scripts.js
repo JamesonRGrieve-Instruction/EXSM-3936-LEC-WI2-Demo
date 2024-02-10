@@ -1,6 +1,6 @@
 const jokeButton = document.querySelector("#getJoke");
 const main = document.querySelector("main");
-
+const displayedJokeIDs = [];
 async function getJoke() {
   const joke = await fetch("https://v2.jokeapi.dev/joke/Programming?safe-mode");
   if (!joke.ok) {
@@ -9,9 +9,15 @@ async function getJoke() {
   const jokeData = await joke.json();
   return jokeData;
 }
-
 jokeButton.addEventListener("click", async () => {
-  const joke = await getJoke();
+  let joke = await getJoke();
+  while (displayedJokeIDs.includes(joke.id)) {
+    // For testing purposes - can spam click the button and watch for an error.
+    //console.error(`Duplicate joke found with ID ${joke.id}, fetching another.`);
+    joke = await getJoke();
+  }
+  displayedJokeIDs.push(joke.id);
+
   if (joke.type === "single") {
     const jokeElement = document.createElement("p");
     jokeElement.textContent = joke.joke;
