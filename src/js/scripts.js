@@ -37,6 +37,7 @@ jokeButton.addEventListener("click", async () => {
     // Add the event listener to reveal the punchline.
     revealButton.addEventListener("click", () => {
       deliveryElement.classList.remove("hidden");
+      revealButton.remove();
     });
     // Append the elements to the main element.
     main.appendChild(setupElement);
