@@ -38,14 +38,18 @@ userButton.addEventListener("click", async () => {
       userImage.src = user.picture.large;
       userElement.appendChild(userImage);
 
-      const userEmail = document.createElement("a");
-      userEmail.href = `mailto:${user.email}`;
-      userEmail.textContent = user.email;
+      const userEmail = document.createElement("p");
+      const userEmailLink = document.createElement("a");
+      userEmailLink.href = `mailto:${user.email}`;
+      userEmailLink.textContent = user.email;
+      userEmail.appendChild(userEmailLink);
       userElement.appendChild(userEmail);
 
-      const userPhone = document.createElement("a");
-      userPhone.href = `tel:${user.phone}`;
-      userPhone.textContent = user.phone;
+      const userPhone = document.createElement("p");
+      const userPhoneLink = document.createElement("a");
+      userPhoneLink.href = `tel:${user.phone}`;
+      userPhoneLink.textContent = user.phone;
+      userPhone.appendChild(userPhoneLink);
       userElement.appendChild(userPhone);
 
       main.appendChild(userElement);
