@@ -98,8 +98,10 @@ function writeToBrowserStorage() {
 
 function readFromBrowserStorage() {
   const imageList = JSON.parse(localStorage.getItem("imageList"));
-  for (const image of imageList) {
-    main.appendChild(createImage(image.id, image.name, image.url, image.tags));
+  if (imageList?.length >= 1) {
+    for (const image of imageList) {
+      main.appendChild(createImage(image.id, image.name, image.url, image.tags));
+    }
   }
 }
 
