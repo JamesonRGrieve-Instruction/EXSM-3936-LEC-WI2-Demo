@@ -80,6 +80,29 @@ function createNameInput(value) {
   return input;
 }
 
+function writeToBrowserStorage() {
+  const imageList = [];
+  const imageContainers = document.querySelectorAll(".image-container");
+  for (const container of imageContainers) {
+    const image = {
+      id: container.id,
+      name: container.querySelector("h2").textContent,
+      url: container.querySelector("img").src,
+      tags: Array.from(container.querySelectorAll("li")).map((tag) => tag.textContent.replaceAll("#", "")),
+    };
+    imageList.push(image);
+  }
+  const imageListString = JSON.stringify(imageList);
+  localStorage.setItem("imageList", imageListString);
+}
+
+function readFromBrowserStorage() {
+  const imageList = JSON.parse(localStorage.getItem("imageList"));
+  for (const image of imageList) {
+    main.appendChild(createImage(image.id, image.name, image.url, image.tags));
+  }
+}
+
 function clickSave(event) {
   const target = event.target.parentNode.parentNode.parentNode;
   const name = target.querySelector("input");
@@ -100,6 +123,7 @@ function clickSave(event) {
     saveButton.replaceWith(editButton);
     cancelButton.replaceWith(cloneButton);
     sortImageContainers();
+    writeToBrowserStorage();
   } catch (error) {
     showModal(error.message);
     console.error(error);
@@ -151,6 +175,7 @@ function clickClone(event) {
     checkForExistingImage(clone.querySelector("h2").innerText, clone.id);
     main.appendChild(clone);
     sortImageContainers();
+    writeToBrowserStorage();
   } catch (error) {
     showModal(error.message);
     console.error(error);
@@ -170,24 +195,16 @@ function cancelModal(event) {
   modalOpen = false;
 }
 
-submitButton.addEventListener("click", (event) => {
-  event.preventDefault();
-
-  // prevent user from submitting with empty inputs
-  if (!urlInput.value.trim() || !nameInput.value.trim() || !tagInput.value.trim()) {
-    showModal("Please fill out all the input fields!");
-    return;
-  }
-
+function createImage(id, name, url, tags) {
   // Build Container
   const newImageContainer = document.createElement("div");
-  newImageContainer.id = nameInput.value.trim().replaceAll(" ", "-").toLowerCase();
+  newImageContainer.id = id;
   newImageContainer.classList.add("image-container");
   const newImageContainerTitleBar = document.createElement("div");
 
   // Build Heading
   const newImageHeading = document.createElement("h2");
-  newImageHeading.textContent = nameInput.value.trim();
+  newImageHeading.textContent = name;
   // Build Icon Buttons
   const newImageIconButtons = document.createElement("span");
   // Create Edit Button
@@ -202,12 +219,13 @@ submitButton.addEventListener("click", (event) => {
 
   // Build Image
   const newImage = document.createElement("img");
-  newImage.src = urlInput.value.trim();
-  newImage.alt = nameInput.value.trim();
+  newImage.src = url;
+  newImage.alt = name;
   // Build Tags
   const newImageTags = document.createElement("ul");
   // For each tag in the input, create a new li element.
-  for (const tag of tagInput.value.trim().split(" ")) {
+
+  for (const tag of tags) {
     const newImageTag = document.createElement("li");
     const newImageTagA = document.createElement("a");
     // Prevent the link from trying to navigate.
@@ -227,11 +245,26 @@ submitButton.addEventListener("click", (event) => {
   newImageContainer.appendChild(newImageContainerTitleBar);
   newImageContainer.appendChild(newImage);
   newImageContainer.appendChild(newImageTags);
-  try {
-    checkForExistingImage(newImageHeading.textContent, newImageContainer.id);
-    main.appendChild(newImageContainer);
-    sortImageContainers();
 
+  return newImageContainer;
+}
+
+submitButton.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  // prevent user from submitting with empty inputs
+  if (!urlInput.value.trim() || !nameInput.value.trim() || !tagInput.value.trim()) {
+    showModal("Please fill out all the input fields!");
+    return;
+  }
+  const newName = nameInput.value.trim();
+  const newId = newName.replaceAll(" ", "-").toLowerCase();
+
+  try {
+    checkForExistingImage(newName, newId);
+    main.appendChild(createImage(newId, newName, urlInput.value.trim(), tagInput.value.trim().split(" ")));
+    sortImageContainers();
+    writeToBrowserStorage();
     // remove input values
     urlInput.value = "";
     nameInput.value = "";
@@ -307,3 +340,5 @@ function showModal(message, deleteImage = false, event = null) {
 
   modalOpen = true;
 }
+
+readFromBrowserStorage();
